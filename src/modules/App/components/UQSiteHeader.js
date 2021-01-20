@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { PropTypes } from 'prop-types';
 
-import Megamenu from './Megamenu';
+import { isHdrStudent } from 'helpers/general';
+import { loadChatStatus, loadCurrentAccount, loadLibHours } from 'actions';
 import { APP_URL, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, routes } from '../../../config';
 import locale from '../../../locale/global';
 import { pathConfig } from 'config/routes';
-import { AuthButton } from '../../SharedComponents/Toolbox/AuthButton';
+
+import Megamenu from './Megamenu';
+import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
 import { AskUs } from './AskUs';
-import { UQSiteHeaderLocale } from './UQSiteHeader.locale';
 import MyLibrary from './MyLibrary';
+import { UQSiteHeaderLocale } from './UQSiteHeader.locale';
 
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
@@ -84,8 +88,8 @@ const useStyles = makeStyles(
 );
 
 export const UQSiteHeader = ({
-    isHdrStudent,
     account,
+    accountLoading,
     author,
     authorDetails,
     history,
@@ -94,21 +98,56 @@ export const UQSiteHeader = ({
     libHoursLoading,
 }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
-    const menuItems = routes.getMenuConfig(account, author, authorDetails, !!isHdrStudent, false);
+
+    // if the component is not inside a React app then these wont have been passed in
+    // add Throttling here
+    !accountLoading && (!account || !author || !authorDetails) && dispatch(loadCurrentAccount());
+    !libHoursLoading && !libHours && dispatch(loadLibHours());
+    !chatStatus && dispatch(loadChatStatus());
+
+    const menuItems = routes.getMenuConfig(account, author, authorDetails, !!isHdrStudent(account), false);
     const isAuthorizedUser = !!account && !!account.id;
     const redirectUserToLogin = (isAuthorizedUser = false, redirectToCurrentLocation = false) => () => {
         const redirectUrl = isAuthorizedUser ? AUTH_URL_LOGOUT : AUTH_URL_LOGIN;
         const returnUrl = redirectToCurrentLocation || !isAuthorizedUser ? window.location.href : APP_URL;
         window.location.assign(`${redirectUrl}?url=${window.btoa(returnUrl)}`);
     };
+
+    const visitHomepage = () => {
+        const libraryHomepageUrl = 'https://www.library.uq.edu.au/';
+        const localhostHomepageUrl = 'http://localhost:2020/';
+        const isHomePage =
+            window.location.href === libraryHomepageUrl ||
+            window.location.href === localhostHomepageUrl ||
+            window.location.href.startsWith(`${localhostHomepageUrl}?`);
+        const isSubpageOfHomepageReactApp =
+            !isHomePage &&
+            (window.location.href.startsWith(libraryHomepageUrl) ||
+                window.location.href.startsWith(localhostHomepageUrl)) &&
+            typeof history === 'object' &&
+            history !== null;
+
+        if (isHomePage) {
+            // do nothing
+            return false;
+        } else if (isSubpageOfHomepageReactApp) {
+            return !!history && history.push(pathConfig.index);
+        } else {
+            window.location.href(libraryHomepageUrl);
+            return false;
+        }
+    };
+
     return (
         <div className={classes.siteHeader} id="uq-site-header" data-testid="uq-site-header">
             <Grid container spacing={0} className={classes.siteHeaderTop}>
                 <Grid item xs={'auto'}>
                     <Button
-                        onClick={() => history.push(pathConfig.index)}
+                        onClick={() => visitHomepage()}
                         className={classes.title}
                         id="uq-site-header-home-button"
                         data-testid="uq-site-header-home-button"
@@ -180,11 +219,11 @@ export const UQSiteHeader = ({
 };
 
 UQSiteHeader.propTypes = {
-    isHdrStudent: PropTypes.bool,
-    chatStatus: PropTypes.bool,
     account: PropTypes.object,
+    accountLoading: PropTypes.bool,
     author: PropTypes.object,
     authorDetails: PropTypes.object,
+    chatStatus: PropTypes.bool,
     history: PropTypes.object,
     libHours: PropTypes.object,
     libHoursLoading: PropTypes.bool,

@@ -5,6 +5,7 @@ import { routes, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, APP_URL } from 'config';
 import locale from 'locale/global';
 import browserUpdate from 'browser-update';
 import { AccountContext } from 'context';
+import { isHdrStudent } from 'helpers/general';
 
 browserUpdate({
     required: {
@@ -140,19 +141,12 @@ export class AppClass extends PureComponent {
 
     render() {
         const { classes } = this.props;
-        const isAccountLoading = this.props.accountLoading;
-        const isHdrStudent =
-            !isAccountLoading &&
-            !!this.props.account &&
-            this.props.account.class &&
-            this.props.account.class.indexOf('IS_CURRENT') >= 0 &&
-            this.props.account.class.indexOf('IS_UQ_STUDENT_PLACEMENT') >= 0;
         const routesConfig = routes.getRoutesConfig({
             components: pages,
             authorDetails: this.props.authorDetails,
             account: this.props.account,
             accountAuthorDetailsLoading: this.props.accountAuthorDetailsLoading,
-            isHdrStudent: isHdrStudent,
+            isHdrStudent: isHdrStudent(this.props.account),
         });
         return (
             <Grid container className={classes.layoutFill}>
@@ -171,8 +165,8 @@ export class AppClass extends PureComponent {
                         <UQHeader />
                     </div>
                     <UQSiteHeader
-                        isHdrStudent={isHdrStudent}
                         account={this.props.account}
+                        accountLoading={this.props.accountLoading}
                         author={this.props.author}
                         authorDetails={this.props.authorDetails}
                         history={this.props.history}

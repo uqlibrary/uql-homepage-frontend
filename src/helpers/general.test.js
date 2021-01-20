@@ -1,4 +1,4 @@
-import { getCampusByCode, isRepeatingString, leftJoin, stripHtml, unescapeString } from './general';
+import { getCampusByCode, isHdrStudent, isRepeatingString, leftJoin, stripHtml, unescapeString } from './general';
 import { getUserServices } from './access';
 import { accounts } from '../mock/data';
 
@@ -94,5 +94,10 @@ describe('general helpers', () => {
         expect(unescapeString(null)).toEqual('');
 
         expect(unescapeString('1&amp;2')).toEqual('1 and 2');
+    });
+
+    it('should know if an account is for a HDR student', () => {
+        expect(isHdrStudent(accounts.s1111111)).toEqual(true);
+        expect(isHdrStudent(accounts.uqstaff)).toEqual(false);
     });
 });

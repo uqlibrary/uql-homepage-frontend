@@ -75,3 +75,9 @@ export const throwFetchErrors = response => {
     }
     return response;
 };
+
+export const isHdrStudent = account =>
+    !!account &&
+    account.class &&
+    account.class.indexOf('IS_CURRENT') >= 0 &&
+    account.class.indexOf('IS_UQ_STUDENT_PLACEMENT') >= 0;
