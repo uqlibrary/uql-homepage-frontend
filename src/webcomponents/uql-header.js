@@ -9,7 +9,7 @@ export default class UqlHeader extends HTMLElement {
     }
 
     mountPoint: HTMLSpanElement;
-    showLoginButton: bool;
+    showLoginButton: boolean;
 
     createHeader(showLoginButton) {
         return React.createElement(UQSiteHeader, { showLoginButton }, React.createElement('slot'));

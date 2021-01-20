@@ -140,7 +140,6 @@ export class AppClass extends PureComponent {
 
     render() {
         const { classes } = this.props;
-        const isAuthorizedUser = this.props.accountLoading === false && this.props.account !== null;
         const isAccountLoading = this.props.accountLoading;
         const isHdrStudent =
             !isAccountLoading &&
@@ -172,10 +171,8 @@ export class AppClass extends PureComponent {
                         <UQHeader />
                     </div>
                     <UQSiteHeader
-                        isAuthorizedUser={isAuthorizedUser}
                         isHdrStudent={isHdrStudent}
                         account={this.props.account}
-                        accountLoading={isAccountLoading}
                         author={this.props.author}
                         authorDetails={this.props.authorDetails}
                         history={this.props.history}

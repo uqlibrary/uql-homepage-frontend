@@ -89,7 +89,6 @@ export const UQSiteHeader = ({
     author,
     authorDetails,
     history,
-    isAuthorizedUser,
     chatStatus,
     libHours,
     libHoursLoading,
@@ -98,6 +97,7 @@ export const UQSiteHeader = ({
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
     const menuItems = routes.getMenuConfig(account, author, authorDetails, !!isHdrStudent, false);
+    const isAuthorizedUser = !!account && !!account.id;
     const redirectUserToLogin = (isAuthorizedUser = false, redirectToCurrentLocation = false) => () => {
         const redirectUrl = isAuthorizedUser ? AUTH_URL_LOGOUT : AUTH_URL_LOGIN;
         const returnUrl = redirectToCurrentLocation || !isAuthorizedUser ? window.location.href : APP_URL;
@@ -181,7 +181,6 @@ export const UQSiteHeader = ({
 
 UQSiteHeader.propTypes = {
     isHdrStudent: PropTypes.bool,
-    isAuthorizedUser: PropTypes.bool,
     chatStatus: PropTypes.bool,
     account: PropTypes.object,
     author: PropTypes.object,
