@@ -1,0 +1,29 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Library React components as Web Components</title>
+
+    <style type="text/css">
+        .content {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="content">
+    <h1>Dummy representation of a website that includes Library React components as Web Components</h1>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue vel massa ac volutpat. Vivamus scelerisque, leo pretium elementum finibus, libero risus condimentum eros, at gravida diam turpis vitae nulla. Ut in purus non quam ultricies sodales. Etiam dapibus gravida dignissim. Donec laoreet sagittis arcu, eget suscipit tellus tristique a. Aenean ullamcorper lacinia nisi non volutpat. Nam viverra sem diam, id faucibus nulla vehicula faucibus. Aenean ultricies purus sit amet condimentum semper. Sed tempor iaculis molestie. Suspendisse consequat est eget risus malesuada ultricies. In sagittis vel sem a elementum. Suspendisse vulputate mattis volutpat. Quisque interdum sapien id urna euismod, id bibendum dolor luctus. Proin egestas, lacus nec ultricies efficitur, urna est molestie libero, tincidunt tempor purus ipsum sed nisi. Praesent molestie sem eu imperdiet aliquam.</p>
+</div>
+
+<script type="text/javascript" src="../src/applications/sample-site/load.js"></script>
+<!-- rather than include this directly, we need to include some sort of built object that holds these webcomponents, so React etc are available -->
+<script type="module" src="../src/webcomponents/uql-header.js"></script>
+
+</body>
+</html>
