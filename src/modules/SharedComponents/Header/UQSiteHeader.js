@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useRef } from 'react';
+import { throttle } from 'throttle-debounce';
 import { PropTypes } from 'prop-types';
 
 import { isHdrStudent } from 'helpers/general';
@@ -8,10 +8,10 @@ import { APP_URL, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, routes } from '../../../confi
 import locale from '../../../locale/global';
 import { pathConfig } from 'config/routes';
 
-import Megamenu from './Megamenu';
+import Megamenu from '../../App/components/Megamenu';
 import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
-import { AskUs } from './AskUs';
-import MyLibrary from './MyLibrary';
+import { AskUs } from '../../App/components/AskUs';
+import MyLibrary from '../../App/components/MyLibrary';
 import { UQSiteHeaderLocale } from './UQSiteHeader.locale';
 
 import { makeStyles } from '@material-ui/styles';
@@ -96,18 +96,22 @@ export const UQSiteHeader = ({
     chatStatus,
     libHours,
     libHoursLoading,
+    isLibraryWebsiteCall,
 }) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
 
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
 
-    // if the component is not inside a React app then these wont have been passed in
-    // add Throttling here
-    !accountLoading && (!account || !author || !authorDetails) && dispatch(loadCurrentAccount());
-    !libHoursLoading && !libHours && dispatch(loadLibHours());
-    !chatStatus && dispatch(loadChatStatus());
+    const throttledAccountLoad = useRef(throttle(3100, () => loadCurrentAccount()));
+    const throttledOpeningHoursLoad = useRef(throttle(3100, () => loadLibHours()));
+    const throttledChatStatusLoad = useRef(throttle(3100, () => loadChatStatus()));
+    if (!isLibraryWebsiteCall) {
+        // if the component is not inside our React app then these wont have been passed in
+        !accountLoading && (!account || !author || !authorDetails) && throttledAccountLoad();
+        !libHoursLoading && !libHours && throttledOpeningHoursLoad();
+        !chatStatus && throttledChatStatusLoad();
+    }
 
     const menuItems = routes.getMenuConfig(account, author, authorDetails, !!isHdrStudent(account), false);
     const isAuthorizedUser = !!account && !!account.id;
@@ -236,8 +240,11 @@ UQSiteHeader.propTypes = {
     history: PropTypes.object,
     libHours: PropTypes.object,
     libHoursLoading: PropTypes.bool,
+    isLibraryWebsiteCall: PropTypes.bool,
 };
 
-UQSiteHeader.defaultProps = {};
+UQSiteHeader.defaultProps = {
+    isLibraryWebsiteCall: false,
+};
 
 export default UQSiteHeader;

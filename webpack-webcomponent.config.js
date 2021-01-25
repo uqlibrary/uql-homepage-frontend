@@ -1,5 +1,31 @@
 'use strict';
 
+/**
+ * I was thinking this would be a way to build the components: a second webpack call that uses a different
+ * config file.
+ * but I dont think this is needed now
+ * instead, have the main webpack add a file to the dist folder that is js to include on the foreign website
+ * that, webpack knowing the hash key in each of those files, manually includes them
+ * because of the old reusable project, NGINX is already setup with cors to allow these sites to include
+ * our components
+ *
+ * but maybe we do.
+ * if we include the main bundles on the dummy page, we get a console error of 'Target container is not a DOM element'
+ * this is because is cant find `<div id="react-root"`
+ * (and if we paste it in experimentally we get a homepage notfound page included on our dummy page. Duh.)
+ * Really, we dont want to include App, we just want to include all the Shared Components
+ * (including UQHeader and UQSiteHeader, under a reuse plan they are now Shared)
+ *
+ * so:
+ * - create wrapper components that insert Shared Components into a page (do we actually need this?
+ *   can we do it directly, or is the shadow dom aspects of this wrapping process at
+ *   https://medium.com/@gilfink/wrapping-react-components-inside-custom-elements-97431d1155bd
+ *   needed?)
+ * - second webpack file that generates different built components (from the same react components)
+ * - applications folder where (same as old reusable) we have a set of load.js files that insert the correct items
+ *   into the DOM for that site
+ */
+
 const { resolve } = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -11,31 +37,7 @@ const chalk = require('chalk');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const WebpackStrip = require('strip-loader');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { DumpMetaPlugin } = require('dumpmeta-webpack-plugin');
-
-const options = {
-    policy: [
-        {
-            userAgent: '*',
-            allow: [
-                '/$',
-                '/index.html$',
-                '/contact$',
-                '/view/*',
-                '/data/*',
-                '/assets/*.svg',
-                '/sitemap/*.xml',
-                '/list-by-year/*.html',
-                '/*.js',
-                '/*.css',
-            ],
-            disallow: ['/'],
-        },
-    ],
-    sitemap: 'https://library.uq.edu.au/sitemap/sitemap-index.xml',
-};
 
 // get branch name for current build, if running build locally CI_BRANCH is not set (it's set in codeship)
 const branch = process && process.env && process.env.CI_BRANCH ? process.env.CI_BRANCH : 'development';
@@ -54,45 +56,18 @@ if (config.environment === 'development') {
     config.basePath += branch + '/';
 }
 
-class CreateWebComponentGetter {
-    // from https://stackoverflow.com/questions/40069605/how-to-dynamically-create-a-new-file-that-should-be-included-in-the-bundle-with?noredirect=1&lq=1
-    // creates webcompenent.js in dist that can read the hash value and then include the appropriate files
-    apply(compiler) {
-        let allData = '';
-
-        // inject a function to loaderContext so loaders can pass back info
-        compiler.hooks.compilation.tap('CreateWebComponentGetter', compilation =>
-            compilation.hooks.normalModuleLoader.tap('CreateWebComponentGetter', (loaderContext, module) => {
-                loaderContext.myExportFn = data => {
-                    allData += data;
-                };
-            }),
-        );
-
-        // at the end, generate an asset using the data
-        compiler.hooks.emit.tapAsync('CreateWebComponentGetter', (compilation, callback) => {
-            compilation.assets['myfile.js'] = {
-                source: () => allData,
-                size: () => allData.length,
-            };
-            callback();
-        });
-    }
-}
-
 const webpackConfig = {
     mode: 'production',
     devtool: 'source-map',
     // The entry file. All your app roots from here.
     entry: {
-        main: resolve(__dirname, './src/index.js'),
+        main: resolve(__dirname, './src/webcomponentWrapper.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
-        webcomponents: resolve(__dirname, './src/Webcomponents/index.js'),
     },
     // Where you want the output to go
     output: {
         path: resolve(__dirname, './dist/', config.basePath),
-        filename: 'frontend-js/[name]-[hash].min.js',
+        filename: 'webcomponent-js/[name]-[hash].min.js',
         publicPath: config.publicPath,
     },
     devServer: {
@@ -185,14 +160,6 @@ const webpackConfig = {
             analyzerMode: config.environment === 'production' ? 'disabled' : 'static',
             openAnalyzer: !process.env.CI_BRANCH,
         }),
-        new RobotstxtPlugin(options),
-        new DumpMetaPlugin({
-            filename: 'dist/meta.json',
-            prepare: stats => ({
-                hash: stats.hash,
-            }),
-        }),
-        new CreateWebComponentGetter(),
     ],
     optimization: {
         splitChunks: {

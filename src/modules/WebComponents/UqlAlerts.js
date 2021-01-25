@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
 import AppAlert from 'modules/App/containers/AppAlert';
 
-export default class UqlUqlAlerts extends HTMLElement {
+export default class UqlAlerts extends HTMLElement {
     mountPoint: HTMLSpanElement;
 
     createUqlAlerts() {

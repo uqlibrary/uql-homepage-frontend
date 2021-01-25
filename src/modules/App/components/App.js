@@ -8,12 +8,15 @@ import { ContentLoader } from 'modules/SharedComponents/Toolbox/Loaders';
 import AppAlertContainer from '../containers/AppAlert';
 import * as pages from './pages';
 import Grid from '@material-ui/core/Grid';
-import UQHeader from './UQHeader';
+import UQHeader from '../../SharedComponents/Header/UQHeader';
 import ChatStatus from './ChatStatus';
 import { ConnectFooter, MinimalFooter } from 'modules/SharedComponents/Footer';
-import UQSiteHeader from './UQSiteHeader';
+import UQSiteHeader from '../../SharedComponents/Header/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
 import { isHdrStudent } from 'helpers/general';
+
+// eslint-disable-next-line no-unused-vars
+import { UqlHeader } from 'modules/Webcomponents';
 
 browserUpdate({
     required: {
@@ -126,6 +129,7 @@ export const App = ({
                     chatStatus={!!chatStatus && chatStatus.online}
                     libHours={libHours}
                     libHoursloading={libHoursLoading}
+                    isLibraryWebsiteCall
                 />
                 <div role="region" aria-label="UQ Library Alerts">
                     <AppAlertContainer />

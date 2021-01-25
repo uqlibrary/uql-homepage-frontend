@@ -1,17 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
-import UQSiteHeader from 'modules/App/components/UQSiteHeader';
+import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
 
 export default class UqlHeader extends HTMLElement {
     static get observedAttributes() {
         return ['showLoginButton'];
     }
 
-    mountPoint: HTMLSpanElement;
-    showLoginButton: boolean;
-
     createHeader(showLoginButton) {
+        console.log('about to createElement');
         return React.createElement(UQSiteHeader, { showLoginButton }, React.createElement('slot'));
     }
 
@@ -21,6 +19,7 @@ export default class UqlHeader extends HTMLElement {
         shadowRoot.appendChild(this.mountPoint);
 
         const showLoginButton = this.getAttribute('showLoginButton');
+        console.log('about to render');
         ReactDOM.render(this.createHeader(showLoginButton), this.mountPoint);
         retargetEvents(shadowRoot);
     }
@@ -31,5 +30,3 @@ export default class UqlHeader extends HTMLElement {
         }
     }
 }
-
-window.customElements.define('uql-header', UqlHeader);
