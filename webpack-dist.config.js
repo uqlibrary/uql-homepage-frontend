@@ -187,8 +187,7 @@ const webpackConfig = {
             filename: '[name]-[hash].min.css',
         }),
         new CreateWebComponentGetter({
-            // TODO finalise filename
-            filename: 'dist/webcomponentwrapperTEST2.js',
+            filename: 'dist/webcomponentwrapper.js',
         }),
 
         // plugin for passing in data to the js, like what NODE_ENV we are in.
