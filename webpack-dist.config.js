@@ -92,11 +92,13 @@ class CreateWebComponentGetter {
             '\n' +
             'async function loadReusableComponents() {\n' +
             // TODO dev address
-            "    const location = 'http://localhost:63342/homepage-react/dist/development/frontend-js/';\n" +
-            "    await insertScript(location + 'vendor-" +
+            '    const root = ' +
+            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development' : 'https://www.library.uq.edu.au';\n" +
+            "    const locator = root + '/frontend-js/';\n" +
+            "    await insertScript(locator + 'vendor-" +
             hash +
             ".min.js');\n" +
-            "    await insertScript(location + 'webcomponents-" +
+            "    await insertScript(locator + 'webcomponents-" +
             hash +
             ".min.js');\n" +
             '\n' +
@@ -105,9 +107,8 @@ class CreateWebComponentGetter {
             'ready(loadReusableComponents);\n';
 
         compiler.hooks.done.tap(this.constructor.name, stats => {
-            const thecontent = allData(stats.hash);
             return new Promise((resolve, reject) => {
-                fs.writeFile(this.options.filename, thecontent, 'utf8', error => {
+                fs.writeFile(this.options.filename, allData(stats.hash), 'utf8', error => {
                     if (error) {
                         reject(error);
                         return;
