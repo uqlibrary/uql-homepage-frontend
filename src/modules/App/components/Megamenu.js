@@ -11,20 +11,17 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
-import { mui1theme } from 'config';
 
 const styles = theme => {
-    console.log('theme =', theme);
-    const themeLocal = mui1theme;
     return {
         megamenublock: {
-            backgroundColor: themeLocal.palette.white.main,
+            backgroundColor: theme.palette.white.main,
             width: '100%',
         },
         mainMenu: {
             outline: 'none',
             paddingTop: 0,
-            [themeLocal.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('lg')]: {
                 display: 'flex',
                 margin: 0,
                 paddingTop: 0,
@@ -59,11 +56,11 @@ const styles = theme => {
             fontWeight: 400,
         },
         ListItemTextSecondary: {
-            ...themeLocal.typography.caption,
+            ...theme.typography.caption,
         },
         menuDropdown: {
-            backgroundColor: themeLocal.palette.secondary.light,
-            [themeLocal.breakpoints.up('lg')]: {
+            backgroundColor: theme.palette.secondary.light,
+            [theme.breakpoints.up('lg')]: {
                 // apply this to mobile as well and the submenu goes over the other menu headers
                 zIndex: 1000,
                 position: 'absolute',
@@ -73,12 +70,12 @@ const styles = theme => {
             marginLeft: '-20rem',
         },
         submenus: {
-            [themeLocal.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('lg')]: {
                 flexDirection: 'row',
             },
         },
         menuColumns: {
-            [themeLocal.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('lg')]: {
                 display: 'flex',
             },
             '& > div': {
@@ -93,12 +90,12 @@ const styles = theme => {
             borderBottom: '2px solid #51247a',
         },
         menuItemContainer: {
-            [themeLocal.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('lg')]: {
                 '& > div': {
                     paddingLeft: 0,
                 },
             },
-            [themeLocal.breakpoints.down('md')]: {
+            [theme.breakpoints.down('md')]: {
                 '& div': {
                     margin: 0,
                     padding: 0,
@@ -120,7 +117,7 @@ const styles = theme => {
             },
         },
         menuItem: {
-            [themeLocal.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('lg')]: {
                 paddingTop: 0,
                 paddingBottom: 0,
                 '& div': {

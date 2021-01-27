@@ -7,12 +7,12 @@ import { loadChatStatus, loadCurrentAccount, loadLibHours } from 'actions';
 import { APP_URL, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, routes } from 'config';
 import locale from 'locale/global';
 import { pathConfig } from 'config/routes';
-
-import Megamenu from '../../App/components/Megamenu';
-import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
-import { AskUs } from '../../App/components/AskUs';
-import MyLibrary from '../../App/components/MyLibrary';
 import { UQSiteHeaderLocale } from './UQSiteHeader.locale';
+
+import { AskUs } from 'modules/App/components/AskUs';
+import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
+import Megamenu from 'modules/App/components/Megamenu';
+import MyLibrary from 'modules/App/components/MyLibrary';
 
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
@@ -23,70 +23,69 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles();
-// const useStyles = makeStyles(
-//     theme => ({
-//         siteHeader: {
-//             width: '100%',
-//             // backgroundColor: theme.palette.white.main,
-//             paddingBottom: '1rem',
-//         },
-//         siteHeaderTop: {
-//             maxWidth: 1280,
-//             marginLeft: 'auto',
-//             marginRight: 'auto',
-//             paddingTop: '0.5rem',
-//             paddingBottom: 0,
-//             paddingLeft: 46,
-//             paddingRight: 44,
-//             // [theme.breakpoints.down('xs')]: {
-//             //     paddingLeft: 12,
-//             //     paddingRight: 12,
-//             // },
-//             marginTop: 0,
-//             marginBottom: 0,
-//         },
-//         siteHeaderBottom: {
-//             maxWidth: 1280,
-//             marginLeft: 'auto',
-//             marginRight: 'auto',
-//             marginTop: 0,
-//             marginBottom: 0,
-//             paddingLeft: 0,
-//             paddingRight: 0,
-//         },
-//         title: {
-//             // color: theme.palette.primary.main,
-//             fontSize: '1.25rem',
-//             fontWeight: 500,
-//             textTransform: 'capitalize',
-//             marginLeft: -10,
-//             '&:hover': {
-//                 textDecoration: 'none !important',
-//             },
-//         },
-//         utility: {
-//             marginTop: -8,
-//             marginBottom: -16,
-//             marginLeft: 0,
-//             marginRight: -8,
-//         },
-//         utilityButton: {
-//             fontSize: 12,
-//             fontWeight: 400,
-//             // color: theme.palette.primary.main,
-//         },
-//         utilityButtonLabel: {
-//             display: 'flex',
-//             flexDirection: 'column',
-//             // color: theme.palette.primary.main,
-//         },
-//         icons: {
-//             marginRight: 6,
-//         },
-//     }),
-//     { withTheme: true },
-// );
+const useStyles = makeStyles(
+    theme => ({
+        siteHeader: {
+            width: '100%',
+            backgroundColor: theme.palette.white.main,
+            paddingBottom: '1rem',
+        },
+        siteHeaderTop: {
+            maxWidth: 1280,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            paddingTop: '0.5rem',
+            paddingBottom: 0,
+            paddingLeft: 46,
+            paddingRight: 44,
+            [theme.breakpoints.down('xs')]: {
+                paddingLeft: 12,
+                paddingRight: 12,
+            },
+            marginTop: 0,
+            marginBottom: 0,
+        },
+        siteHeaderBottom: {
+            maxWidth: 1280,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: 0,
+            marginBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+        },
+        title: {
+            color: theme.palette.primary.main,
+            fontSize: '1.25rem',
+            fontWeight: 500,
+            textTransform: 'capitalize',
+            marginLeft: -10,
+            '&:hover': {
+                textDecoration: 'none !important',
+            },
+        },
+        utility: {
+            marginTop: -8,
+            marginBottom: -16,
+            marginLeft: 0,
+            marginRight: -8,
+        },
+        utilityButton: {
+            fontSize: 12,
+            fontWeight: 400,
+            color: theme.palette.primary.main,
+        },
+        utilityButtonLabel: {
+            display: 'flex',
+            flexDirection: 'column',
+            color: theme.palette.primary.main,
+        },
+        icons: {
+            marginRight: 6,
+        },
+    }),
+    { withTheme: true },
+);
 
 export const UQSiteHeader = ({
     account,
@@ -102,9 +101,7 @@ export const UQSiteHeader = ({
     showLoginButton,
     showMylibraryButton,
 }) => {
-    // const classes = useStyles(mui1theme);
     const classes = useStyles();
-
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
 

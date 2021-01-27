@@ -1,30 +1,35 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
-import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
-// import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-// import ThemeProvider from '@material-ui/styles/ThemeProvider';
-// import { mui1theme } from 'config';
+import JssProvider from 'react-jss/lib/JssProvider';
 
-// TODO need to include UQHeader and UQSiteHeader
+import { mui1theme } from 'config/index';
+import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
+
+import { createGenerateClassName } from '@material-ui/core/styles';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
+
+const generateClassName = createGenerateClassName({
+    dangerouslyUseGlobalCSS: false,
+    productionPrefix: 'uq-espace-',
+});
+
+// TODO need to include UQHeader as well as UQSiteHeader
 export default class UqlHeader extends HTMLElement {
     static get observedAttributes() {
         return ['showLoginButton', 'showAskusButton', 'showMylibraryButton'];
     }
 
     createHeader(showAskusButton, showLoginButton, showMylibraryButton) {
-        console.log('about to createElement');
-        return React.createElement(
+        const header = React.createElement(
             UQSiteHeader,
             { showAskusButton, showLoginButton, showMylibraryButton },
             React.createElement('slot'),
         );
-        // const header = React.createElement(
-        //     UQSiteHeader,
-        //     { showAskusButton, showLoginButton, showMylibraryButton },
-        //     React.createElement('slot'),
-        // );
-        // return React.createElement(MuiThemeProvider, { theme: mui1theme }, header);
+        const muithemeprovider = React.createElement(MuiThemeProvider, { theme: mui1theme }, header);
+        const themeprovider = React.createElement(ThemeProvider, { theme: mui1theme }, muithemeprovider);
+        return React.createElement(JssProvider, { generateClassName: generateClassName }, themeprovider);
     }
 
     connectedCallback() {
@@ -35,7 +40,6 @@ export default class UqlHeader extends HTMLElement {
         const showAskusButton = this.getAttribute('showAskusButton');
         const showLoginButton = this.getAttribute('showLoginButton');
         const showMylibraryButton = this.getAttribute('showMylibraryButton');
-        console.log('about to render');
         ReactDOM.render(this.createHeader(showAskusButton, showLoginButton, showMylibraryButton), this.mountPoint);
         retargetEvents(shadowRoot);
     }

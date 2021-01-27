@@ -61,7 +61,6 @@ class CreateWebComponentGetter {
         this.options = {
             ...options,
         };
-        console.log('this.options = ', this.options);
     }
     apply(compiler) {
         const allData = hash =>
