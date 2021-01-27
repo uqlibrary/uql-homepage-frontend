@@ -13,7 +13,7 @@ import ChatStatus from './ChatStatus';
 import { ConnectFooter, MinimalFooter } from 'modules/SharedComponents/Footer';
 import UQSiteHeader from '../../SharedComponents/Header/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
-import { isHdrStudent } from 'helpers/general';
+import { isHdrStudent } from 'helpers/access';
 
 browserUpdate({
     required: {

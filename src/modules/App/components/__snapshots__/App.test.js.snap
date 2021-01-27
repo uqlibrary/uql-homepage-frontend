@@ -985,8 +985,10 @@ exports[`Application component should render for anon user 1`] = `
                           "location": Object {},
                         }
                       }
-                      isAuthorizedUser={false}
-                      isHdrStudent={false}
+                      isLibraryWebsiteCall={true}
+                      showAskusButton={true}
+                      showLoginButton={true}
+                      showMylibraryButton={true}
                     >
                       <div
                         className="makeStyles-siteHeader-111"
@@ -20114,8 +20116,10 @@ exports[`Application component should render loading screen while account is loa
                           "location": Object {},
                         }
                       }
-                      isAuthorizedUser={false}
-                      isHdrStudent={false}
+                      isLibraryWebsiteCall={true}
+                      showAskusButton={true}
+                      showLoginButton={true}
+                      showMylibraryButton={true}
                     >
                       <div
                         className="makeStyles-siteHeader-111"

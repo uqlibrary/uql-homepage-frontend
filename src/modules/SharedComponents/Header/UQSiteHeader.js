@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { throttle } from 'throttle-debounce';
 import { PropTypes } from 'prop-types';
 
-import { isHdrStudent } from 'helpers/general';
+import { isHdrStudent } from 'helpers/access';
 import { loadChatStatus, loadCurrentAccount, loadLibHours } from 'actions';
 import { APP_URL, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, routes } from '../../../config';
 import locale from '../../../locale/global';
