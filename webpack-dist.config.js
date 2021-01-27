@@ -13,7 +13,7 @@ const WebpackStrip = require('strip-loader');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { DumpMetaPlugin } = require('dumpmeta-webpack-plugin');
+const fs = require('fs');
 
 const options = {
     policy: [
@@ -55,27 +55,67 @@ if (config.environment === 'development') {
 }
 
 class CreateWebComponentGetter {
-    // from https://stackoverflow.com/questions/40069605/how-to-dynamically-create-a-new-file-that-should-be-included-in-the-bundle-with?noredirect=1&lq=1
     // creates webcompenent.js in dist that can read the hash value and then include the appropriate files
+    // from https://stackoverflow.com/questions/50228128/how-to-inject-webpack-build-hash-to-application-code
+    constructor(options = {}) {
+        this.options = {
+            ...options,
+        };
+        console.log('this.options = ', this.options);
+    }
     apply(compiler) {
-        let allData = '';
+        const allData = hash =>
+            'async function ready(fn) {\n' +
+            "    if (document.readyState !== 'loading'){\n" +
+            '        await fn();\n' +
+            '    } else {\n' +
+            "        document.addEventListener('DOMContentLoaded', fn);\n" +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            'async function insertScript(url) {\n' +
+            '    var script = document.querySelector("script[src*=\'" + url + "\']");\n' +
+            '    if (!script) {\n' +
+            "        var heads = document.getElementsByTagName('head');\n" +
+            '        if (heads && heads.length) {\n' +
+            '            var head = heads[0];\n' +
+            '            if (head) {\n' +
+            "                script = document.createElement('script');\n" +
+            "                script.setAttribute('src', url);\n" +
+            "                script.setAttribute('defer', true);\n" +
+            "                script.setAttribute('type', 'text/javascript');\n" +
+            '                head.appendChild(script);\n' +
+            '            }\n' +
+            '        }\n' +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            'async function loadReusableComponents() {\n' +
+            // TODO dev address
+            "    const location = 'http://localhost:63342/homepage-react/dist/development/frontend-js/';\n" +
+            "    await insertScript(location + 'vendor-" +
+            hash +
+            ".min.js');\n" +
+            "    await insertScript(location + 'webcomponents-" +
+            hash +
+            ".min.js');\n" +
+            '\n' +
+            "    window.customElements.define('uql-header', UqlHeader);\n" +
+            '}\n' +
+            '\n' +
+            'ready(loadReusableComponents);\n';
 
-        // inject a function to loaderContext so loaders can pass back info
-        compiler.hooks.compilation.tap('CreateWebComponentGetter', compilation =>
-            compilation.hooks.normalModuleLoader.tap('CreateWebComponentGetter', (loaderContext, module) => {
-                loaderContext.myExportFn = data => {
-                    allData += data;
-                };
-            }),
-        );
-
-        // at the end, generate an asset using the data
-        compiler.hooks.emit.tapAsync('CreateWebComponentGetter', (compilation, callback) => {
-            compilation.assets['myfile.js'] = {
-                source: () => allData,
-                size: () => allData.length,
-            };
-            callback();
+        compiler.hooks.done.tap(this.constructor.name, stats => {
+            const thecontent = allData(stats.hash);
+            return new Promise((resolve, reject) => {
+                fs.writeFile(this.options.filename, thecontent, 'utf8', error => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve();
+                });
+            });
         });
     }
 }
@@ -87,7 +127,7 @@ const webpackConfig = {
     entry: {
         main: resolve(__dirname, './src/index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
-        webcomponents: resolve(__dirname, './src/Webcomponents/index.js'),
+        webcomponents: resolve(__dirname, './src/modules/WebComponents/index.js'),
     },
     // Where you want the output to go
     output: {
@@ -146,6 +186,10 @@ const webpackConfig = {
         new MiniCssExtractPlugin({
             filename: '[name]-[hash].min.css',
         }),
+        new CreateWebComponentGetter({
+            // TODO finalise filename
+            filename: 'dist/webcomponentwrapperTEST2.js',
+        }),
 
         // plugin for passing in data to the js, like what NODE_ENV we are in.
         new webpack.DefinePlugin({
@@ -186,13 +230,6 @@ const webpackConfig = {
             openAnalyzer: !process.env.CI_BRANCH,
         }),
         new RobotstxtPlugin(options),
-        new DumpMetaPlugin({
-            filename: 'dist/meta.json',
-            prepare: stats => ({
-                hash: stats.hash,
-            }),
-        }),
-        new CreateWebComponentGetter(),
     ],
     optimization: {
         splitChunks: {

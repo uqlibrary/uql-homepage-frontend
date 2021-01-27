@@ -3,14 +3,19 @@ import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
 import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
 
+// TODO need to include UQHeader and UQSiteHeader
 export default class UqlHeader extends HTMLElement {
     static get observedAttributes() {
-        return ['showLoginButton'];
+        return ['showLoginButton', 'showAskusButton', 'showMylibraryButton'];
     }
 
-    createHeader(showLoginButton) {
+    createHeader(showAskusButton, showLoginButton, showMylibraryButton) {
         console.log('about to createElement');
-        return React.createElement(UQSiteHeader, { showLoginButton }, React.createElement('slot'));
+        return React.createElement(
+            UQSiteHeader,
+            { showAskusButton, showLoginButton, showMylibraryButton },
+            React.createElement('slot'),
+        );
     }
 
     connectedCallback() {
@@ -18,14 +23,17 @@ export default class UqlHeader extends HTMLElement {
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(this.mountPoint);
 
+        const showAskusButton = this.getAttribute('showAskusButton');
         const showLoginButton = this.getAttribute('showLoginButton');
+        const showMylibraryButton = this.getAttribute('showMylibraryButton');
         console.log('about to render');
-        ReactDOM.render(this.createHeader(showLoginButton), this.mountPoint);
+        ReactDOM.render(this.createHeader(showAskusButton, showLoginButton, showMylibraryButton), this.mountPoint);
         retargetEvents(shadowRoot);
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'showLoginButton') {
+        if (['showLoginButton', 'showAskusButton', 'showMylibraryButton'].includes(name)) {
+            // this doesnt make sense - must pass all 3 values! TODO
             ReactDOM.render(this.createHeader(newValue), this.mountPoint);
         }
     }

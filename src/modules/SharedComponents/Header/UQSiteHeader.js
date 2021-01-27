@@ -97,6 +97,9 @@ export const UQSiteHeader = ({
     libHours,
     libHoursLoading,
     isLibraryWebsiteCall,
+    showAskusButton,
+    showLoginButton,
+    showMylibraryButton,
 }) => {
     const classes = useStyles();
 
@@ -160,20 +163,24 @@ export const UQSiteHeader = ({
                     </Button>
                 </Grid>
                 <Grid item xs />
-                {isAuthorizedUser && (
+                {isAuthorizedUser && showMylibraryButton && (
                     <Grid item xs={'auto'} className={classes.utility} id="mylibrary" data-testid="mylibrary">
                         <MyLibrary account={account} author={author} history={history} />
                     </Grid>
                 )}
-                <Grid item xs={'auto'} className={classes.utility} id="askus" data-testid="askus">
-                    <AskUs chatStatus={chatStatus} libHours={libHours} libHoursLoading={libHoursLoading} />
-                </Grid>
-                <Grid item xs={'auto'} className={classes.utility} id="auth" data-testid="auth">
-                    <AuthButton
-                        isAuthorizedUser={isAuthorizedUser}
-                        onClick={redirectUserToLogin(isAuthorizedUser, true)}
-                    />
-                </Grid>
+                {!!showAskusButton && (
+                    <Grid item xs={'auto'} className={classes.utility} id="askus" data-testid="askus">
+                        <AskUs chatStatus={chatStatus} libHours={libHours} libHoursLoading={libHoursLoading} />
+                    </Grid>
+                )}
+                {!!showLoginButton && (
+                    <Grid item xs={'auto'} className={classes.utility} id="auth" data-testid="auth">
+                        <AuthButton
+                            isAuthorizedUser={isAuthorizedUser}
+                            onClick={redirectUserToLogin(isAuthorizedUser, true)}
+                        />
+                    </Grid>
+                )}
                 <Grid item xs={'auto'} className={classes.utility} data-testid="mobile-megamenu" id="mobile-megamenu">
                     <Hidden lgUp>
                         <Grid item xs={'auto'} id="mobile-menu" data-testid="mobile-menu">
@@ -241,10 +248,16 @@ UQSiteHeader.propTypes = {
     libHours: PropTypes.object,
     libHoursLoading: PropTypes.bool,
     isLibraryWebsiteCall: PropTypes.bool,
+    showAskusButton: PropTypes.bool,
+    showLoginButton: PropTypes.bool,
+    showMylibraryButton: PropTypes.bool,
 };
 
 UQSiteHeader.defaultProps = {
     isLibraryWebsiteCall: false,
+    showAskusButton: false,
+    showLoginButton: false,
+    showMylibraryButton: false,
 };
 
 export default UQSiteHeader;

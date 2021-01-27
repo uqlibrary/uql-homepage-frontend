@@ -15,9 +15,6 @@ import UQSiteHeader from '../../SharedComponents/Header/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
 import { isHdrStudent } from 'helpers/general';
 
-// eslint-disable-next-line no-unused-vars
-import { UqlHeader } from 'modules/Webcomponents';
-
 browserUpdate({
     required: {
         e: -2,
@@ -130,6 +127,9 @@ export const App = ({
                     libHours={libHours}
                     libHoursloading={libHoursLoading}
                     isLibraryWebsiteCall
+                    showAskusButton
+                    showLoginButton
+                    showMylibraryButton
                 />
                 <div role="region" aria-label="UQ Library Alerts">
                     <AppAlertContainer />
