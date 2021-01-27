@@ -141,6 +141,18 @@ to keep initial load to a minimum following optimisation has been added to the p
   - publicationForm.js locale is loaded only when PublicationForm component is loaded
   - Other locale files are not too big, all bundled into one for now
 
+#### Web Components
+
+The Library Header and Footer components can be included on another website (if the site is whitelisted in nginx cors, in api).
+
+The basic approach is [from this Medium article](https://medium.com/@gilfink/wrapping-react-components-inside-custom-elements-97431d1155bd).
+
+Locally, do a `npm run build` and then load public/dummywebsite.html in a browser to see an example.
+
+On other websites, follow the instructions in the [README](src/applications/sample-site/README.md). Each website should have its own load.js, deciding what header elements it should have.
+
+(Basic approach: have a wrapper component for each of header, footer, alerts and then webpack will write a second webcomponents.js file in the dist folder which will call them, then we create an Applications subfolder for each site that loads it).
+
 ### Webpack
 
 #### version: 4

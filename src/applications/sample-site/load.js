@@ -34,7 +34,10 @@ function loadReusableComponents() {
 
     window.addEventListener('WebComponentsReady', function () {
         // when react is ready - configure elements
+        // these values are the default, but I wanted to show it
         header.showLoginButton = false;
+        header.showAskusButton = false;
+        header.showMylibraryButton = false;
     });
 }
 
