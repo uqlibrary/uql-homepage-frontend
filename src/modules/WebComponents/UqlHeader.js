@@ -2,6 +2,9 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
 import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
+// import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+// import ThemeProvider from '@material-ui/styles/ThemeProvider';
+// import { mui1theme } from 'config';
 
 // TODO need to include UQHeader and UQSiteHeader
 export default class UqlHeader extends HTMLElement {
@@ -16,6 +19,12 @@ export default class UqlHeader extends HTMLElement {
             { showAskusButton, showLoginButton, showMylibraryButton },
             React.createElement('slot'),
         );
+        // const header = React.createElement(
+        //     UQSiteHeader,
+        //     { showAskusButton, showLoginButton, showMylibraryButton },
+        //     React.createElement('slot'),
+        // );
+        // return React.createElement(MuiThemeProvider, { theme: mui1theme }, header);
     }
 
     connectedCallback() {
@@ -38,3 +47,5 @@ export default class UqlHeader extends HTMLElement {
         }
     }
 }
+
+window.customElements.define('uql-header', UqlHeader);

@@ -100,7 +100,6 @@ class CreateWebComponentGetter {
             hash +
             ".min.js');\n" +
             '\n' +
-            "    window.customElements.define('uql-header', UqlHeader);\n" +
             '}\n' +
             '\n' +
             'ready(loadReusableComponents);\n';
