@@ -96,6 +96,7 @@ export const UQSiteHeader = ({
     chatStatus,
     libHours,
     libHoursLoading,
+    libHoursError,
     isLibraryWebsiteCall,
     showAskusButton,
     showLoginButton,
@@ -169,7 +170,12 @@ export const UQSiteHeader = ({
                 )}
                 {!!showAskusButton && (
                     <Grid item xs={'auto'} className={classes.utility} id="askus" data-testid="askus">
-                        <AskUs chatStatus={chatStatus} libHours={libHours} libHoursLoading={libHoursLoading} />
+                        <AskUs
+                            chatStatus={chatStatus}
+                            libHours={libHours}
+                            libHoursLoading={libHoursLoading}
+                            libHoursError={libHoursError}
+                        />
                     </Grid>
                 )}
                 {!!showLoginButton && (
@@ -246,6 +252,7 @@ UQSiteHeader.propTypes = {
     history: PropTypes.object,
     libHours: PropTypes.object,
     libHoursLoading: PropTypes.bool,
+    libHoursError: PropTypes.bool,
     isLibraryWebsiteCall: PropTypes.bool,
     showAskusButton: PropTypes.bool,
     showLoginButton: PropTypes.bool,

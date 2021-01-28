@@ -90,6 +90,7 @@ export const App = ({
     chatStatus,
     libHours,
     libHoursLoading,
+    libHoursError,
     history,
 }) => {
     useEffect(() => {
@@ -126,6 +127,7 @@ export const App = ({
                     chatStatus={!!chatStatus && chatStatus.online}
                     libHours={libHours}
                     libHoursloading={libHoursLoading}
+                    libHoursError={libHoursError}
                     isLibraryWebsiteCall
                     showAskusButton
                     showLoginButton
@@ -176,6 +178,7 @@ App.propTypes = {
     history: PropTypes.any,
     libHours: PropTypes.object,
     libHoursLoading: PropTypes.bool,
+    libHoursError: PropTypes.bool,
     chatStatus: PropTypes.object,
     isSessionExpired: PropTypes.any,
 };
