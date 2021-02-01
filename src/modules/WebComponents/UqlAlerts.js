@@ -1,13 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
-import AppAlert from 'modules/App/containers/AppAlert';
+import { Alert } from 'modules/SharedComponents/Toolbox/Alert/components/Alert';
 
 export default class UqlAlerts extends HTMLElement {
-    mountPoint: HTMLSpanElement;
-
     createUqlAlerts() {
-        return React.createElement(AppAlert, {}, React.createElement('slot'));
+        return React.createElement(Alert, {}, React.createElement('slot'));
     }
 
     connectedCallback() {

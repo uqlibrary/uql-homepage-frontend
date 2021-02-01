@@ -13,12 +13,12 @@ function loadReusableComponents() {
     const firstElement = document.body.children[0];
 
     // insert alerts after body-tag
-    // let alerts = document.querySelector('uql-alerts');
-    // if (!alerts) {
-    //     // as a back up insert header if it's not defined already
-    //     alerts = document.createElement('uqlibrary-alerts');
-    //     document.body.insertBefore(alerts, firstElement);
-    // }
+    let alerts = document.querySelector('uql-alerts');
+    if (!alerts) {
+        // as a back up insert header if it's not defined already
+        alerts = document.createElement('uqlibrary-alerts');
+        document.body.insertBefore(alerts, firstElement);
+    }
 
     // insert header after alerts
     const uqheader = document.createElement('uq-header');
