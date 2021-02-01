@@ -100,9 +100,9 @@ class CreateWebComponentGetter {
             "    await insertScript(locator + 'webcomponents-" +
             hash +
             ".min.js');\n" +
-            '\n' +
             '}\n' +
             '\n' +
+            // TODO: polyfill here
             'ready(loadReusableComponents);\n';
 
         compiler.hooks.done.tap(this.constructor.name, stats => {

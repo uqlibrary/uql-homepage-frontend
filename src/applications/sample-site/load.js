@@ -21,9 +21,12 @@ function loadReusableComponents() {
     // }
 
     // insert header after alerts
-    const header = document.createElement('uql-header');
-    document.body.insertBefore(header, firstElement);
+    const uqheader = document.createElement('uq-header');
+    document.body.insertBefore(uqheader, firstElement);
 
+    // const header = document.createElement('uql-header');
+    // document.body.insertBefore(header, firstElement);
+    //
     // // insert sub footer before body-tag
     // const subFooter = document.createElement('uql-connect-footer');
     // document.body.appendChild(subFooter);
