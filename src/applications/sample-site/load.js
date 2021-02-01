@@ -30,18 +30,18 @@ function loadReusableComponents() {
     // // insert sub footer before body-tag
     // const subFooter = document.createElement('uql-connect-footer');
     // document.body.appendChild(subFooter);
-    //
-    // // insert footer before body-tag
-    // const footer = document.createElement('uql-minimal-footer');
-    // document.body.appendChild(footer);
 
-    window.addEventListener('WebComponentsReady', function () {
-        // when react is ready - configure elements
-        // these values are the default, but I wanted to show it
-        header.showLoginButton = false;
-        header.showAskusButton = false;
-        header.showMylibraryButton = false;
-    });
+    // insert footer before body-tag
+    const footer = document.createElement('uq-minimal-footer');
+    document.body.appendChild(footer);
+
+    // window.addEventListener('WebComponentsReady', function () {
+    //     // when react is ready - configure elements
+    //     // these values are the default, but I wanted to show it
+    //     header.showLoginButton = false;
+    //     header.showAskusButton = false;
+    //     header.showMylibraryButton = false;
+    // });
 }
 
 ready(loadReusableComponents);

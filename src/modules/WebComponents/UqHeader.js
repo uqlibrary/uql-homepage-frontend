@@ -21,22 +21,6 @@ export default class UqHeader extends HTMLElement {
     //     return ['showLoginButton', 'showAskusButton', 'showMylibraryButton'];
     // }
 
-    insertLink(link) {
-        let linkTag = document.querySelector("link[href*='" + link.href + "']");
-        if (!linkTag) {
-            const heads = document.getElementsByTagName('head');
-            if (heads && heads.length) {
-                const head = heads[0];
-                if (head) {
-                    linkTag = document.createElement('link');
-                    linkTag.setAttribute('href', link.href);
-                    linkTag.setAttribute('rel', link.rel);
-                    head.appendChild(linkTag);
-                }
-            }
-        }
-    }
-
     createHeader() {
         const header = React.createElement(UQHeaderReact, {}, React.createElement('slot'));
         const muithemeprovider = React.createElement(MuiThemeProvider, { theme: mui1theme }, header);
