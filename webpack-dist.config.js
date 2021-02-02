@@ -54,8 +54,9 @@ if (config.environment === 'development') {
     config.basePath += branch + '/';
 }
 
+// TODO see if this can moved to an external file
 class CreateWebComponentGetter {
-    // creates webcompenent.js in dist that can read the hash value and then include the appropriate files
+    // creates webcompenent.js in dist that include the appropriate files because it can read the hash value here
     // from https://stackoverflow.com/questions/50228128/how-to-inject-webpack-build-hash-to-application-code
     constructor(options = {}) {
         this.options = {
