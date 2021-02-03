@@ -12,7 +12,7 @@ export default class UqMinimalFooter extends HTMLElement {
     connectedCallback() {
         const styles = document.createElement('link');
         styles.setAttribute('rel', 'stylesheet');
-        styles.setAttribute('href', '/homepage-react/dist/development/main-89b80a55679d0b986238.min.css');
+        styles.setAttribute('href', '/homepage-react/dist/development/main-dc172b3d43cb187382f7.min.css');
 
         this.mountPoint = document.createElement('span');
         const shadowRoot = this.attachShadow({ mode: 'open' });
