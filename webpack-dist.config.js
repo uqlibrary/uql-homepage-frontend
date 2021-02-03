@@ -56,7 +56,7 @@ if (config.environment === 'development') {
 
 // TODO see if this can moved to an external file
 class CreateWebComponentGetter {
-    // creates webcompenent.js in dist that include the appropriate files because it can read the hash value here
+    // creates webcomponentwrapper.js in dist that include the appropriate files because it can read the hash value here
     // from https://stackoverflow.com/questions/50228128/how-to-inject-webpack-build-hash-to-application-code
     constructor(options = {}) {
         this.options = {
@@ -91,6 +91,11 @@ class CreateWebComponentGetter {
             '}\n' +
             '\n' +
             'async function loadReusableComponents() {\n' +
+            // TODO: polyfill here
+            // eg
+            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js');\n" +
+            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js');\n" +
+            '\n' +
             // TODO dev address
             '    const root = ' +
             "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development' : 'https://www.library.uq.edu.au';\n" +
@@ -103,7 +108,6 @@ class CreateWebComponentGetter {
             ".min.js');\n" +
             '}\n' +
             '\n' +
-            // TODO: polyfill here
             'ready(loadReusableComponents);\n';
 
         compiler.hooks.done.tap(this.constructor.name, stats => {
@@ -274,6 +278,7 @@ const webpackConfig = {
             },
             {
                 test: /\.scss/,
+                // exclude: ['/src/modules/Webcomponents/'],
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
             {
