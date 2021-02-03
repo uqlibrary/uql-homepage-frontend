@@ -12,21 +12,17 @@ function loadReusableComponents() {
     // first element of the original document
     const firstElement = document.body.children[0];
 
-    // insert alerts after body-tag
-    let alerts = document.querySelector('uql-alerts');
-    if (!alerts) {
-        // as a back up insert header if it's not defined already
-        alerts = document.createElement('uqlibrary-alerts');
-        document.body.insertBefore(alerts, firstElement);
-    }
-
-    // insert header after alerts
+    // insert header at body start
     const uqheader = document.createElement('uq-header');
     document.body.insertBefore(uqheader, firstElement);
 
     // const header = document.createElement('uql-header');
     // document.body.insertBefore(header, firstElement);
-    //
+
+    // insert alerts after headers
+    const alerts = document.createElement('uql-alerts');
+    document.body.insertBefore(alerts, firstElement);
+
     // // insert sub footer before body-tag
     // const subFooter = document.createElement('uql-connect-footer');
     // document.body.appendChild(subFooter);
