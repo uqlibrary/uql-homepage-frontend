@@ -8,6 +8,7 @@ import { APP_URL, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, routes } from 'config';
 import locale from 'locale/global';
 import { pathConfig } from 'config/routes';
 import { UQSiteHeaderLocale } from './UQSiteHeader.locale';
+import { mui1theme } from 'config/index';
 
 import { AskUs } from 'modules/App/components/AskUs';
 import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
@@ -102,7 +103,7 @@ export const UQSiteHeader = ({
     showLoginButton,
     showMylibraryButton,
 }) => {
-    const classes = useStyles();
+    const classes = useStyles(mui1theme);
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
 

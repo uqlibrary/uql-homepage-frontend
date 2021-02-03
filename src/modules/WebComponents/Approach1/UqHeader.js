@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
 import JssProvider from 'react-jss/lib/JssProvider';
 
-import { mui1theme } from 'config/index';
+import { mui1theme } from 'config';
 import { UQHeader as UQHeaderReact } from 'modules/SharedComponents/Header/UQHeader';
 
 import { createGenerateClassName } from '@material-ui/core/styles';
@@ -32,7 +32,7 @@ export default class UqHeader extends HTMLElement {
         const styles = document.createElement('link');
         styles.setAttribute('rel', 'stylesheet');
         // https://www.npmjs.com/package/modify-source-webpack-plugin
-        styles.setAttribute('href', '/homepage-react/dist/development/main-a7ae6f80b9153ba46a45.min.css');
+        styles.setAttribute('href', '/homepage-react/dist/development/main-cfe5320bb6afc419eba0.min.css');
 
         this.mountPoint = document.createElement('span');
         const shadowRoot = this.attachShadow({ mode: 'open' });

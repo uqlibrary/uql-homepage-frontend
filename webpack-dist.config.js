@@ -278,7 +278,6 @@ const webpackConfig = {
             },
             {
                 test: /\.scss/,
-                // exclude: ['/src/modules/Webcomponents/'],
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
             {

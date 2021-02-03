@@ -1,21 +1,12 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
-import JssProvider from 'react-jss/lib/JssProvider';
 
-import { mui1theme } from 'config/index';
+import { mui1theme } from 'config';
 import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
 
-import { createGenerateClassName } from '@material-ui/core/styles';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
 
-const generateClassName = createGenerateClassName({
-    dangerouslyUseGlobalCSS: false,
-    productionPrefix: 'uq-espace-',
-});
-
-// TODO need to include UQHeader as well as UQSiteHeader
 export default class UqlHeader extends HTMLElement {
     static get observedAttributes() {
         return ['showLoginButton', 'showAskusButton', 'showMylibraryButton'];
@@ -27,15 +18,19 @@ export default class UqlHeader extends HTMLElement {
             { showAskusButton, showLoginButton, showMylibraryButton },
             React.createElement('slot'),
         );
-        const muithemeprovider = React.createElement(MuiThemeProvider, { theme: mui1theme }, header);
-        const themeprovider = React.createElement(ThemeProvider, { theme: mui1theme }, muithemeprovider);
-        return React.createElement(JssProvider, { generateClassName: generateClassName }, themeprovider);
+        return React.createElement(MuiThemeProvider, { theme: mui1theme }, header);
     }
 
     connectedCallback() {
         this.mountPoint = document.createElement('span');
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(this.mountPoint);
+
+        const styles = document.createElement('link');
+        styles.setAttribute('rel', 'stylesheet');
+        // this isnt actually the css we want, but lets see if it does anything...
+        styles.setAttribute('href', '/homepage-react/dist/development/manual.css');
+        shadowRoot.appendChild(styles);
 
         const showAskusButton = this.getAttribute('showAskusButton');
         const showLoginButton = this.getAttribute('showLoginButton');

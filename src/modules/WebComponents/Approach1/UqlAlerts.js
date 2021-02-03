@@ -3,7 +3,8 @@ import * as ReactDOM from 'react-dom';
 import * as retargetEvents from 'react-shadow-dom-retarget-events';
 
 import { Alert } from 'modules/SharedComponents/Toolbox/Alert/components/Alert';
-import { mui1theme } from 'config/index';
+// import AppAlertContainer from '../../App/containers/AppAlert';
+import { mui1theme } from 'config';
 
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 
