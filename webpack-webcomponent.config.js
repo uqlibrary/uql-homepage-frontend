@@ -1,31 +1,5 @@
 'use strict';
 
-/**
- * I was thinking this would be a way to build the components: a second webpack call that uses a different
- * config file.
- * but I dont think this is needed now
- * instead, have the main webpack add a file to the dist folder that is js to include on the foreign website
- * that, webpack knowing the hash key in each of those files, manually includes them
- * because of the old reusable project, NGINX is already setup with cors to allow these sites to include
- * our components
- *
- * but maybe we do.
- * if we include the main bundles on the dummy page, we get a console error of 'Target container is not a DOM element'
- * this is because is cant find `<div id="react-root"`
- * (and if we paste it in experimentally we get a homepage notfound page included on our dummy page. Duh.)
- * Really, we dont want to include App, we just want to include all the Shared Components
- * (including UQHeader and UQSiteHeader, under a reuse plan they are now Shared)
- *
- * so:
- * - create wrapper components that insert Shared Components into a page (do we actually need this?
- *   can we do it directly, or is the shadow dom aspects of this wrapping process at
- *   https://medium.com/@gilfink/wrapping-react-components-inside-custom-elements-97431d1155bd
- *   needed?)
- * - second webpack file that generates different built components (from the same react components)
- * - applications folder where (same as old reusable) we have a set of load.js files that insert the correct items
- *   into the DOM for that site
- */
-
 const { resolve } = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -37,7 +11,9 @@ const chalk = require('chalk');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const WebpackStrip = require('strip-loader');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const fs = require('fs');
 
 // get branch name for current build, if running build locally CI_BRANCH is not set (it's set in codeship)
 const branch = process && process.env && process.env.CI_BRANCH ? process.env.CI_BRANCH : 'development';
@@ -56,18 +32,90 @@ if (config.environment === 'development') {
     config.basePath += branch + '/';
 }
 
+// TODO see if this can moved to an external file
+class CreateWebComponentGetter {
+    // creates webcomponentwrapper.js in dist that include the appropriate files because it can read the hash value here
+    // from https://stackoverflow.com/questions/50228128/how-to-inject-webpack-build-hash-to-application-code
+    constructor(options = {}) {
+        this.options = {
+            ...options,
+        };
+    }
+    apply(compiler) {
+        const allData = hash =>
+            'async function ready(fn) {\n' +
+            "    if (document.readyState !== 'loading'){\n" +
+            '        await fn();\n' +
+            '    } else {\n' +
+            "        document.addEventListener('DOMContentLoaded', fn);\n" +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            'async function insertScript(url) {\n' +
+            '    var script = document.querySelector("script[src*=\'" + url + "\']");\n' +
+            '    if (!script) {\n' +
+            "        var heads = document.getElementsByTagName('head');\n" +
+            '        if (heads && heads.length) {\n' +
+            '            var head = heads[0];\n' +
+            '            if (head) {\n' +
+            "                script = document.createElement('script');\n" +
+            "                script.setAttribute('src', url);\n" +
+            "                script.setAttribute('defer', true);\n" +
+            "                script.setAttribute('type', 'text/javascript');\n" +
+            '                head.appendChild(script);\n' +
+            '            }\n' +
+            '        }\n' +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            'async function loadReusableComponents() {\n' +
+            // TODO: polyfill here
+            // eg
+            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js');\n" +
+            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js');\n" +
+            '\n' +
+            // TODO dev address
+            '    const root = ' +
+            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development' : 'https://www.library.uq.edu.au';\n" +
+            "    const locator = root + '/webcomponents-js/';\n" +
+            "    await insertScript(locator + 'vendor-" +
+            hash +
+            ".min.js');\n" +
+            "    await insertScript(locator + 'webcomponents-" +
+            hash +
+            ".min.js');\n" +
+            '}\n' +
+            '\n' +
+            'ready(loadReusableComponents);\n';
+
+        compiler.hooks.done.tap(this.constructor.name, stats => {
+            return new Promise((resolve, reject) => {
+                fs.writeFile(this.options.filename, allData(stats.hash), 'utf8', error => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve();
+                });
+            });
+        });
+    }
+}
+
 const webpackConfig = {
     mode: 'production',
     devtool: 'source-map',
     // The entry file. All your app roots from here.
     entry: {
-        main: resolve(__dirname, './src/webcomponentWrapper.js'),
+        // including this line makes the main-[hash].min.css file be created
+        main: resolve(__dirname, './src/index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
+        webcomponents: resolve(__dirname, './src/modules/WebComponents/index.js'),
     },
     // Where you want the output to go
     output: {
         path: resolve(__dirname, './dist/', config.basePath),
-        filename: 'webcomponent-js/[name]-[hash].min.js',
+        filename: 'webcomponents-js/[name]-[hash].min.js',
         publicPath: config.publicPath,
     },
     devServer: {
@@ -120,6 +168,9 @@ const webpackConfig = {
         // new ExtractTextPlugin('[name]-[hash].min.css'),
         new MiniCssExtractPlugin({
             filename: '[name]-[hash].min.css',
+        }),
+        new CreateWebComponentGetter({
+            filename: 'dist/webcomponentwrapper.js',
         }),
 
         // plugin for passing in data to the js, like what NODE_ENV we are in.
@@ -180,32 +231,50 @@ const webpackConfig = {
     },
     module: {
         rules: [
-            {
-                test: /\.js$/,
-                exclude: [/node_modules/, /custom_modules/],
-                enforce: 'pre',
-                use: 'eslint-loader',
-            },
+            // {
+            //     test: /\.js$/,
+            //     exclude: [/node_modules/, /custom_modules/],
+            //     // enforce: 'pre',
+            //     // use: 'eslint-loader',
+            // },
             {
                 test: /\.js?$/,
                 include: [resolve(__dirname, 'src')],
                 exclude: [/node_modules/, /custom_modules/, '/src/mocks/'],
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        plugins: [
-                            '@babel/plugin-proposal-export-namespace-from',
-                            '@babel/plugin-proposal-export-default-from',
-                            '@babel/plugin-proposal-class-properties',
-                            '@babel/plugin-syntax-dynamic-import',
-                            ['@babel/plugin-transform-spread', { loose: true }],
-                        ],
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                '@babel/plugin-proposal-export-namespace-from',
+                                '@babel/plugin-proposal-export-default-from',
+                                '@babel/plugin-proposal-class-properties',
+                                '@babel/plugin-syntax-dynamic-import',
+                                ['@babel/plugin-transform-spread', { loose: true }],
+                            ],
+                        },
                     },
-                },
+                    {
+                        loader: 'linaria/loader',
+                        options: { sourceMap: process.env.NODE_ENV !== 'production' },
+                    },
+                ],
             },
             {
                 test: /\.scss/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'css-hot-loader', // from https://codesandbox.io/s/2x93v25p3j?file=/package.json:450-464
+                    // 'css-loader',
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: { sourceMap: process.env.NODE_ENV !== 'production' },
+                    },
+                ],
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { throttle } from 'throttle-debounce';
 import { PropTypes } from 'prop-types';
+import styled from 'styled-components';
 
 import { isHdrStudent } from 'helpers/access';
 import { loadChatStatus, loadCurrentAccount, loadLibHours } from 'actions';
@@ -15,7 +16,6 @@ import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
 import Megamenu from 'modules/App/components/Megamenu';
 import MyLibrary from 'modules/App/components/MyLibrary';
 
-import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,69 +24,66 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles(
-    theme => ({
-        siteHeader: {
-            width: '100%',
-            backgroundColor: theme.palette.white.main,
-            paddingBottom: '1rem',
-        },
-        siteHeaderTop: {
-            maxWidth: 1280,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            paddingTop: '0.5rem',
-            paddingBottom: 0,
-            paddingLeft: 46,
-            paddingRight: 44,
-            [theme.breakpoints.down('xs')]: {
-                paddingLeft: 12,
-                paddingRight: 12,
-            },
-            marginTop: 0,
-            marginBottom: 0,
-        },
-        siteHeaderBottom: {
-            maxWidth: 1280,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginTop: 0,
-            marginBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-        },
-        title: {
-            color: theme.palette.primary.main,
-            fontSize: '1.25rem',
-            fontWeight: 500,
-            textTransform: 'capitalize',
-            marginLeft: -10,
-            '&:hover': {
-                textDecoration: 'none !important',
-            },
-        },
-        utility: {
-            marginTop: -8,
-            marginBottom: -16,
-            marginLeft: 0,
-            marginRight: -8,
-        },
-        utilityButton: {
-            fontSize: 12,
-            fontWeight: 400,
-            color: theme.palette.primary.main,
-        },
-        utilityButtonLabel: {
-            display: 'flex',
-            flexDirection: 'column',
-            color: theme.palette.primary.main,
-        },
-        icons: {
-            marginRight: 6,
-        },
-    }),
-    { withTheme: true },
-);
+// conversion ala https://levelup.gitconnected.com/material-ui-styled-components-fff4d345fb07
+const SiteHeader = styled.div`
+    width: 100%;
+    background-color: ${mui1theme.palette.white.main};
+    padding-bottom: 1rem;
+`;
+
+const SiteHeaderTop = styled(Grid)`
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.5rem;
+    padding-bottom: 0;
+    padding-left: 46px;
+    padding-right: 44px;
+    ${mui1theme.breakpoints.down('xs')} {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    margin-top: 0;
+    margin-bottom: 0;
+`;
+
+const SiteHeaderBottom = styled(Grid)`
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+`;
+
+const Title = styled(Button)`
+    color: ${mui1theme.palette.primary.main};
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    margin-left: -10px;
+    &:hover {
+        text-decoration: none !important;
+    }
+`;
+
+const Utility = styled(Grid)`
+    margin-top: -8px;
+    margin-bottom: -16px;
+    margin-left: 0;
+    margin-right: -8px;
+`;
+
+const UtilityButton = styled(IconButton)`
+    font-size: 12px;
+    font-weight: 400;
+    color: ${mui1theme.palette.primary.main};
+    span {
+        display: flex;
+        flex-direction: column;
+    }
+`;
 
 export const UQSiteHeader = ({
     account,
@@ -103,7 +100,6 @@ export const UQSiteHeader = ({
     showLoginButton,
     showMylibraryButton,
 }) => {
-    const classes = useStyles(mui1theme);
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -151,61 +147,60 @@ export const UQSiteHeader = ({
     };
 
     return (
-        <div className={classes.siteHeader} id="uq-site-header" data-testid="uq-site-header">
-            <Grid container spacing={0} className={classes.siteHeaderTop}>
+        <SiteHeader id="uq-site-header" data-testid="uq-site-header">
+            <SiteHeaderTop container spacing={0}>
                 <Grid item xs={'auto'}>
-                    <Button
+                    <Title
                         onClick={() => visitHomepage()}
-                        className={classes.title}
                         id="uq-site-header-home-button"
                         data-testid="uq-site-header-home-button"
                     >
                         {UQSiteHeaderLocale.title}
-                    </Button>
+                    </Title>
                 </Grid>
                 <Grid item xs />
                 {isAuthorizedUser && showMylibraryButton && (
-                    <Grid item xs={'auto'} className={classes.utility} id="mylibrary" data-testid="mylibrary">
+                    <Utility item xs={'auto'} id="mylibrary" data-testid="mylibrary">
                         <MyLibrary account={account} author={author} history={history} />
-                    </Grid>
+                    </Utility>
                 )}
                 {!!showAskusButton && (
-                    <Grid item xs={'auto'} className={classes.utility} id="askus" data-testid="askus">
+                    <Utility item xs={'auto'} id="askus" data-testid="askus">
                         <AskUs
                             chatStatus={chatStatus}
                             libHours={libHours}
                             libHoursLoading={libHoursLoading}
                             libHoursError={libHoursError}
                         />
-                    </Grid>
+                    </Utility>
                 )}
                 {!!showLoginButton && (
-                    <Grid item xs={'auto'} className={classes.utility} id="auth" data-testid="auth">
+                    <Utility item xs={'auto'} id="auth" data-testid="auth">
                         <AuthButton
                             isAuthorizedUser={isAuthorizedUser}
                             onClick={redirectUserToLogin(isAuthorizedUser, true)}
                         />
-                    </Grid>
+                    </Utility>
                 )}
-                <Grid item xs={'auto'} className={classes.utility} data-testid="mobile-megamenu" id="mobile-megamenu">
+                <Utility item xs={'auto'} data-testid="mobile-megamenu" id="mobile-megamenu">
                     <Hidden lgUp>
                         <Grid item xs={'auto'} id="mobile-menu" data-testid="mobile-menu">
                             <Tooltip title={locale.global.mainNavButton.tooltip}>
-                                <IconButton
+                                <UtilityButton
                                     aria-label={locale.global.mainNavButton.aria}
                                     onClick={toggleMenu}
                                     id="main-menu-button"
                                     data-testid="main-menu-button"
-                                    classes={{ label: classes.utilityButtonLabel, root: classes.utilityButton }}
+                                    // classes={{ label: classes.utilityButtonLabel, root: classes.utilityButton }}
                                 >
                                     {menuOpen ? <CloseIcon color={'primary'} /> : <MenuIcon color={'primary'} />}
                                     <div>Menu</div>
-                                </IconButton>
+                                </UtilityButton>
                             </Tooltip>
                         </Grid>
                     </Hidden>
-                </Grid>
-            </Grid>
+                </Utility>
+            </SiteHeaderTop>
             <Grid container>
                 <Hidden lgUp>
                     <Megamenu
@@ -217,12 +212,11 @@ export const UQSiteHeader = ({
                     />
                 </Hidden>
             </Grid>
-            <Grid
+            <SiteHeaderBottom
                 container
                 spacing={0}
                 role="region"
                 aria-label="Main site navigation"
-                className={classes.siteHeaderBottom}
                 justify={'flex-start'}
             >
                 <Hidden mdDown>
@@ -230,7 +224,7 @@ export const UQSiteHeader = ({
                         <Megamenu menuItems={menuItems} history={history} />
                     </Grid>
                 </Hidden>
-            </Grid>
+            </SiteHeaderBottom>
             <span
                 id="after-navigation"
                 role="region"
@@ -240,7 +234,7 @@ export const UQSiteHeader = ({
             >
                 Start of content
             </span>
-        </div>
+        </SiteHeader>
     );
 };
 

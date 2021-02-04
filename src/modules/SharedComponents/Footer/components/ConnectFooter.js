@@ -1,9 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'linaria/react';
 
 import { default as locale } from '../footer.locale.js';
 import { default as menuLocale } from 'locale/menu';
-import { mui1theme } from 'config/index';
 
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -12,22 +11,32 @@ import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 
 const MainConnectFooter = styled(Grid)`
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
     font-weight: 300;
+    justify-content: center;
     line-height: 25px;
     margin: 0 auto 0 auto;
     max-width: 90%;
-    ${mui1theme.breakpoints.up('lg')} {
-        max-width: 1200px;
-    }
     padding: 20px 0;
     position: relative;
+    width: 100%;
     a {
-        color: ${mui1theme.palette.secondary.dark};
+        color: $secondaryDark;
         text-decoration: none;
         &:hover {
-            color: ${mui1theme.palette.primary.main};
+            color: $primaryMain;
             text-decoration: underline;
         }
+    }
+    div {
+        flex-grow: 0;
+        max-width: 33.333333%;
+        flex-basis: 33.333333%;
+    }
+    @media (min-width: 1280px) {
+        max-width: 1200px;
     }
 `;
 
@@ -36,7 +45,7 @@ const SiteNavigation = styled(Grid)`
     ul {
         padding: 0;
         margin: 0;
-        ${mui1theme.breakpoints.down('sm')} {
+        @media (max-width: 960px) {
             text-align: center;
         }
     }
@@ -44,10 +53,10 @@ const SiteNavigation = styled(Grid)`
         list-style: none;
         margin: 0;
         padding: 0;
-        ${mui1theme.breakpoints.down('sm')} {
+        @media (max-width: 960px) {
             display: inline-block;
         }
-        ${mui1theme.breakpoints.up('md')} {
+        @media (min-width: 960px) {
             font-size: 14px;
             line-height: 1.7;
         }
@@ -63,17 +72,17 @@ const SocialButton = styled(Button)`
     height: 32px;
     min-width: 32px;
     padding: 0;
-    background-color: ${mui1theme.palette.primary.main};
-    color: ${mui1theme.palette.white.main};
+    background-color: $primaryMain;
+    color: $whiteMain;
     &:hover {
-        background-color: ${mui1theme.palette.primary.dark}!important;
+        background-color: $primaryDark !important;
     }
 `;
 
 const Internal = styled(Grid)`
     bottom: 1rem;
     position: absolute;
-    ${mui1theme.breakpoints.down('sm')} {
+    @media (max-width: 960px) {
         bottom: auto;
         margin-top: 1rem;
         position: relative;
@@ -84,7 +93,7 @@ const Internal = styled(Grid)`
 const GivingBlock = styled(Grid)`
     div {
         margin-left: auto;
-        ${mui1theme.breakpoints.down('sm')} {
+        @media (max-width: 960px) {
             margin: 5px auto;
             max-width: 300px;
         }
@@ -96,10 +105,10 @@ const GivingButtonHolder = styled(Grid)`
     max-width: 240px;
     margin-right: 10px;
     button {
-        color: ${mui1theme.palette.white.main}!important;
-        background-color: ${mui1theme.palette.accent.main};
+        color: $whiteMain !important;
+        background-color: $accentMain;
         &:hover {
-            background-color: ${mui1theme.palette.accent.dark};
+            background-color: $accentDark;
         }
         padding: 1rem;
         text-transform: initial;
@@ -111,7 +120,7 @@ const Contacts = styled(Grid)`
     max-width: 400px;
     div {
         div {
-            ${mui1theme.breakpoints.down('sm')} {
+            @media (max-width: 960px) {
                 margin: 0 auto;
             }
         }
@@ -130,7 +139,7 @@ export const ConnectFooter = () => {
     const separator = () => <Separator mdUp>&nbsp;|&nbsp;</Separator>;
 
     return (
-        <MainConnectFooter container data-testid="connect-footer" alignItems="flex-start" justify="center">
+        <MainConnectFooter container data-testid="connect-footer" justify="center">
             <SiteNavigation item xs={12} md={4}>
                 <ul>
                     <li>

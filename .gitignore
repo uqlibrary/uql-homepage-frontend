@@ -33,3 +33,5 @@ cypress/screenshots
 
 # Code Coverage checker temp dir
 .nyc_output
+
+.linaria-cache

@@ -32,7 +32,7 @@ export default class UqHeader extends HTMLElement {
         const styles = document.createElement('link');
         styles.setAttribute('rel', 'stylesheet');
         // https://www.npmjs.com/package/modify-source-webpack-plugin
-        styles.setAttribute('href', '/homepage-react/dist/development/main-cfe5320bb6afc419eba0.min.css');
+        styles.setAttribute('href', '/homepage-react/dist/development/webcomponents-eb2a08858e6f919627bd.min.css');
 
         this.mountPoint = document.createElement('span');
         const shadowRoot = this.attachShadow({ mode: 'open' });

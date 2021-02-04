@@ -10,15 +10,15 @@ function loadReusableComponents() {
     // insert elements, even before React is loaded
 
     // first element of the original document
-    const firstElement = document.body.children[0];
+    // const firstElement = document.body.children[0];
 
     // insert header at body start
-    const uqheader = document.createElement('uq-header');
-    document.body.insertBefore(uqheader, firstElement);
+    // const uqheader = document.createElement('uq-header');
+    // document.body.insertBefore(uqheader, firstElement);
 
     // // const header = document.createElement('library-header');
-    const header = document.createElement('uql-header'); // older approach
-    document.body.insertBefore(header, firstElement);
+    // const header = document.createElement('uql-header'); // older approach
+    // document.body.insertBefore(header, firstElement);
 
     // insert alerts after headers
     // const alerts = document.createElement('uql-alerts');
@@ -34,13 +34,13 @@ function loadReusableComponents() {
     const footer = document.createElement('uq-minimal-footer');
     document.body.appendChild(footer);
 
-    window.addEventListener('WebComponentsReady', function () {
-        // when react is ready - configure elements
-        // these values are the default, but I wanted to show it
-        header.showLoginButton = true;
-        header.showAskusButton = true;
-        header.showMylibraryButton = true;
-    });
+    // window.addEventListener('WebComponentsReady', function () {
+    //     // when react is ready - configure elements
+    //     // these values are the default, but I wanted to show it
+    //     header.showLoginButton = true;
+    //     header.showAskusButton = true;
+    //     header.showMylibraryButton = true;
+    // });
 }
 
 ready(loadReusableComponents);

@@ -136,6 +136,11 @@
         "@babel/polyfill": "^7.8.7",
         "@babel/runtime": "^7.8.7",
         "@date-io/moment": "^1.3.13",
+        "@linaria/babel-preset": "^3.0.0-beta.1",
+        "@linaria/core": "^3.0.0-beta.1",
+        "@linaria/react": "^3.0.0-beta.1",
+        "@linaria/shaker": "^3.0.0-beta.1",
+        "@linaria/webpack-loader": "^3.0.0-beta.1",
         "@material-ui/core": "^4.9.4",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.45",
@@ -149,12 +154,14 @@
         "classnames": "^2.2.6",
         "connected-react-router": "^6.4.0",
         "copy-webpack-plugin": "^6.2.1",
+        "css-hot-loader": "^1.4.4",
         "cypress-axe": "^0.8.1",
         "dumpmeta-webpack-plugin": "^0.2.0",
         "fetch-jsonp": "^1.1.3",
         "history": "^4.7.2",
         "immutable": "^3.8.2",
         "js-cookie": "^2.2.0",
+        "linaria": "^3.0.0-beta.1",
         "match-sorter": "^4.2.1",
         "moment": "^2.22.1",
         "number-to-words": "^1.2.4",
@@ -183,7 +190,7 @@
     "scripts": {
         "analyse": "webpack --config=./webpack-dist.config --profile --json > stats.json",
         "build": "webpack -p --config=./webpack-dist.config",
-        "build:webcomponent": "webpack -p --config=./webpack-webcomponent.config",
+        "build:webcomponents": "webpack -p --config=./webpack-webcomponent.config",
         "build:dev": "webpack --config=./webpack.config",
         "cc:reportAll": "scripts/code-coverage.sh",
         "clean": "rm -rf assets coverage cypress/screenshots cypress/videos dist node_modules stats.json .nyc_output",
@@ -232,8 +239,7 @@
     },
     "babel": {
         "presets": [
-            "@babel/env",
-            "@babel/react"
+            "@babel/env"
         ],
         "env": {
             "development": {

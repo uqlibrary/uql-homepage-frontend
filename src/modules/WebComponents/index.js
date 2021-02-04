@@ -4,6 +4,6 @@ export { default as UqHeader } from './Approach1/UqHeader';
 export { default as UqlConnectFooter } from './Approach1/UqlConnectFooter';
 export { default as UqMinimalFooter } from './Approach1/UqMinimalFooter';
 
-export { default as AlertsWebComponent } from './Approach2/AlertsWebComponent';
-export { default as LibraryHeader } from './Approach2/LibraryHeader';
-export { default as ConnectFooterWebComponent } from './Approach2/ConnectFooterWebComponent';
+// export { default as AlertsWebComponent } from './Approach2/AlertsWebComponent';
+// export { default as LibraryHeader } from './Approach2/LibraryHeader';
+// export { default as ConnectFooterWebComponent } from './Approach2/ConnectFooterWebComponent';
