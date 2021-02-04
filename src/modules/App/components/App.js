@@ -9,7 +9,7 @@ import AppAlertContainer from '../containers/AppAlert';
 import * as pages from './pages';
 import Grid from '@material-ui/core/Grid';
 import UQHeader from 'modules/SharedComponents/Header/UQHeader';
-import ChatStatus from './ChatStatus';
+import ChatStatus from 'modules/SharedComponents/Header/ChatStatus';
 import { ConnectFooter, MinimalFooter } from 'modules/SharedComponents/Footer';
 import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
