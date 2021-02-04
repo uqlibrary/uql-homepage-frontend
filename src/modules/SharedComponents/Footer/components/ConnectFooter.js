@@ -1,249 +1,218 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-// import { default as locale } from '../footer.locale.js';
-// import { default as menuLocale } from 'locale/menu';
+import { default as locale } from '../footer.locale.js';
+import { default as menuLocale } from 'locale/menu';
 import { mui1theme } from 'config/index';
 
-// import Button from '@material-ui/core/Button';
-// import Tooltip from '@material-ui/core/Tooltip';
-// import Grid from '@material-ui/core/Grid';
-// import Hidden from '@material-ui/core/Hidden';
-import { makeStyles } from '@material-ui/styles';
-// import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
+import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles(
-    theme => ({
-        connectFooter: {
-            fontWeight: '300',
-            lineHeight: '25px',
-            margin: '0 auto 0 auto',
-            maxWidth: '90%',
-            [theme.breakpoints.up('lg')]: {
-                maxWidth: '1200px',
-            },
-            padding: '20px 0',
-            position: 'relative',
-            '& a': {
-                color: theme.palette.secondary.dark,
-                textDecoration: 'none',
-                '&:hover': {
-                    color: theme.palette.primary.main,
-                    textDecoration: 'underline',
-                },
-            },
-        },
-        navigation: {
-            marginTop: '-4px',
-            '& ul': {
-                padding: 0,
-                margin: 0,
-                [theme.breakpoints.down('sm')]: {
-                    textAlign: 'center',
-                },
-            },
-            '& li': {
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-                [theme.breakpoints.down('sm')]: {
-                    display: 'inline-block',
-                },
-                [theme.breakpoints.up('md')]: {
-                    fontSize: 14,
-                    lineHeight: 1.7,
-                },
-            },
-        },
-        separator: {
-            display: 'inline-block',
-        },
-        socialButtonClass: {
-            width: 32,
-            height: 32,
-            minWidth: 32,
-            padding: 0,
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.white.main,
-            '&:hover': {
-                backgroundColor: theme.palette.primary.dark + '!important',
-            },
-        },
-        internal: {
-            bottom: '1rem',
-            position: 'absolute',
-            [theme.breakpoints.down('sm')]: {
-                bottom: 'auto',
-                marginTop: '1rem',
-                position: 'relative',
-                textAlign: 'center',
-            },
-        },
-        giving: {
-            '& div': {
-                marginLeft: 'auto',
-                [theme.breakpoints.down('sm')]: {
-                    margin: '5px auto',
-                    maxWidth: '300px',
-                },
-            },
-            textAlign: 'right',
-        },
-        givingBlock: {
-            maxWidth: 240,
-            marginRight: 10,
-        },
-        givingButtonClass: {
-            color: theme.palette.white.main + '!important',
-            backgroundColor: theme.palette.accent.main,
-            '&:hover': {
-                backgroundColor: theme.palette.accent.dark,
-            },
-            padding: '1rem',
-            textTransform: 'initial',
-        },
-        contacts: {
-            marginTop: '-4px',
-            maxWidth: 400,
-            '& div': {
-                '& div': {
-                    [theme.breakpoints.down('sm')]: {
-                        margin: '0 auto',
-                    },
-                },
-            },
-        },
-    }),
-    { withTheme: true },
-);
+const MainConnectFooter = styled(Grid)`
+    font-weight: 300;
+    line-height: 25px;
+    margin: 0 auto 0 auto;
+    max-width: 90%;
+    ${mui1theme.breakpoints.up('lg')} {
+        max-width: 1200px;
+    }
+    padding: 20px 0;
+    position: relative;
+    a {
+        color: ${mui1theme.palette.secondary.dark};
+        text-decoration: none;
+        &:hover {
+            color: ${mui1theme.palette.primary.main};
+            text-decoration: underline;
+        }
+    }
+`;
 
-export function ConnectFooter(props) {
-    let { classes } = props;
-    console.log('1 classes = ', classes);
+const SiteNavigation = styled(Grid)`
+    margin-top: -4px;
+    ul {
+        padding: 0;
+        margin: 0;
+        ${mui1theme.breakpoints.down('sm')} {
+            text-align: center;
+        }
+    }
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        ${mui1theme.breakpoints.down('sm')} {
+            display: inline-block;
+        }
+        ${mui1theme.breakpoints.up('md')} {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+    }
+`;
 
-    classes = useStyles(classes || mui1theme);
-    console.log('2 classes = ', classes);
+const Separator = styled(Hidden)`
+    display: inline-block;
+`;
 
-    // const loadLinkInSamePage = url => {
-    //     window.location.assign(url);
-    // };
-    //
-    // const loadLinkToTarget = (url, target) => {
-    //     window.open(url, target);
-    // };
-    //
-    // const separator = () => (
-    //     <Hidden mdUp className={classes.separator}>
-    //         &nbsp;|&nbsp;
-    //     </Hidden>
-    // );
+const SocialButton = styled(Button)`
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    background-color: ${mui1theme.palette.primary.main};
+    color: ${mui1theme.palette.white.main};
+    &:hover {
+        background-color: ${mui1theme.palette.primary.dark}!important;
+    }
+`;
+
+const Internal = styled(Grid)`
+    bottom: 1rem;
+    position: absolute;
+    ${mui1theme.breakpoints.down('sm')} {
+        bottom: auto;
+        margin-top: 1rem;
+        position: relative;
+        text-align: center;
+    }
+`;
+
+const GivingBlock = styled(Grid)`
+    div {
+        margin-left: auto;
+        ${mui1theme.breakpoints.down('sm')} {
+            margin: 5px auto;
+            max-width: 300px;
+        }
+    }
+    text-align: right;
+`;
+
+const GivingButtonHolder = styled(Grid)`
+    max-width: 240px;
+    margin-right: 10px;
+    button {
+        color: ${mui1theme.palette.white.main}!important;
+        background-color: ${mui1theme.palette.accent.main};
+        &:hover {
+            background-color: ${mui1theme.palette.accent.dark};
+        }
+        padding: 1rem;
+        text-transform: initial;
+    }
+`;
+
+const Contacts = styled(Grid)`
+    margin-top: -4px;
+    max-width: 400px;
+    div {
+        div {
+            ${mui1theme.breakpoints.down('sm')} {
+                margin: 0 auto;
+            }
+        }
+    }
+`;
+
+export const ConnectFooter = () => {
+    const loadLinkInSamePage = url => {
+        window.location.assign(url);
+    };
+
+    const loadLinkToTarget = (url, target) => {
+        window.open(url, target);
+    };
+
+    const separator = () => <Separator mdUp>&nbsp;|&nbsp;</Separator>;
 
     return (
-        <div>footer</div>
-        // <Grid
-        //     className={classes.connectFooter}
-        //     container
-        //     data-testid="connect-footer"
-        //     alignItems="flex-start"
-        //     justify="center"
-        // >
-        //     <Grid item xs={12} md={4} className={classes.navigation}>
-        //         <ul>
-        //             <li>
-        //                 <a data-testid="footermenu-homepage" href={menuLocale.menuhome.linkTo}>
-        //                     {menuLocale.menuhome.primaryText}
-        //                 </a>
-        //                 {separator()}
-        //             </li>
-        //             {menuLocale.publicmenu.map((linkProperties, index) => (
-        //                 <li key={`footerli-${index}`}>
-        //                     <a data-testid={linkProperties.dataTestid} href={linkProperties.linkTo}>
-        //                         {linkProperties.primaryText}
-        //                     </a>
-        //                     {index < menuLocale.publicmenu.length - 1 && separator()}
-        //                 </li>
-        //             ))}
-        //         </ul>
-        //     </Grid>
-        //     <Grid item xs={12} md={4} className={classes.contacts}>
-        //         <Grid container>
-        //             <Grid item xs={'auto'}>
-        //                 <Typography variant={'h6'} component={'h3'} style={{ marginTop: -4 }}>
-        //                     {locale.connectFooter.buttonSocialHeader}
-        //                 </Typography>
-        //             </Grid>
-        //         </Grid>
-        //         <Grid container spacing={1}>
-        //             {locale.connectFooter.buttonSocial.map((item, index) => (
-        //                 <Grid item xs={'auto'} key={`buttonSocial-${index}`} id={`buttonSocial-${index}`}>
-        //                     <Tooltip
-        //                         id={`auth-button-${index}`}
-        //                         title={`${item.linkMouseOver}`}
-        //                         placement="bottom"
-        //                         TransitionProps={{ timeout: 300 }}
-        //                     >
-        //                         <Button
-        //                             aria-label={item.linkMouseOver}
-        //                             classes={{
-        //                                 root: classes.socialButtonClass,
-        //                             }}
-        //                             color="primary"
-        //                             variant="contained"
-        //                             data-testid={item.dataTestid}
-        //                             id={`socialbutton-${index}`}
-        //                             onClick={() => loadLinkToTarget(item.linkTo)}
-        //                         >
-        //                             {item.icon}
-        //                         </Button>
-        //                     </Tooltip>
-        //                 </Grid>
-        //             ))}
-        //         </Grid>
-        //         <Grid className={classes.internal}>
-        //             {locale.connectFooter.internalLinks.map((linkProperties, index) => {
-        //                 return (
-        //                     <span key={`internallabel-${index}`}>
-        //                         <a data-testid={linkProperties.dataTestid} href={linkProperties.linkTo}>
-        //                             {linkProperties.linklabel}
-        //                         </a>
-        //  {index < locale.connectFooter.internalLinks.length - 1 && <span>&nbsp;|&nbsp; </span>}
-        //                     </span>
-        //                 );
-        //             })}
-        //         </Grid>
-        //     </Grid>
-        //     <Grid item xs={12} md={4} className={classes.giving}>
-        //         <Grid container spacing={2}>
-        //             {locale.connectFooter.givingLinks.map((item, index) => {
-        //                 return (
-        //                     <Grid item xs={12} key={`givingLinks-${index}`} className={classes.givingBlock}>
-        //                         <Button
-        //                             fullWidth
-        //                             children={item.label}
-        //                             className={classes.givingButtonClass}
-        //                             data-testid={item.dataTestid}
-        //                             key={`givingLinks-${index}`}
-        //                             onClick={() => loadLinkInSamePage(item.linkTo)}
-        //                             variant="contained"
-        //                         />
-        //                     </Grid>
-        //                 );
-        //             })}
-        //         </Grid>
-        //     </Grid>
-        // </Grid>
+        <MainConnectFooter container data-testid="connect-footer" alignItems="flex-start" justify="center">
+            <SiteNavigation item xs={12} md={4}>
+                <ul>
+                    <li>
+                        <a data-testid="footermenu-homepage" href={menuLocale.menuhome.linkTo}>
+                            {menuLocale.menuhome.primaryText}
+                        </a>
+                        {separator()}
+                    </li>
+                    {menuLocale.publicmenu.map((linkProperties, index) => (
+                        <li key={`footerli-${index}`}>
+                            <a data-testid={linkProperties.dataTestid} href={linkProperties.linkTo}>
+                                {linkProperties.primaryText}
+                            </a>
+                            {index < menuLocale.publicmenu.length - 1 && separator()}
+                        </li>
+                    ))}
+                </ul>
+            </SiteNavigation>
+            <Contacts item xs={12} md={4}>
+                <Grid container>
+                    <Grid item xs={'auto'}>
+                        <Typography variant={'h6'} component={'h3'} style={{ marginTop: -4 }}>
+                            {locale.connectFooter.buttonSocialHeader}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={1}>
+                    {locale.connectFooter.buttonSocial.map((item, index) => (
+                        <Grid item xs={'auto'} key={`buttonSocial-${index}`} id={`buttonSocial-${index}`}>
+                            <Tooltip
+                                id={`auth-button-${index}`}
+                                title={`${item.linkMouseOver}`}
+                                placement="bottom"
+                                TransitionProps={{ timeout: 300 }}
+                            >
+                                <SocialButton
+                                    aria-label={item.linkMouseOver}
+                                    color="primary"
+                                    variant="contained"
+                                    data-testid={item.dataTestid}
+                                    id={`socialbutton-${index}`}
+                                    onClick={() => loadLinkToTarget(item.linkTo)}
+                                >
+                                    {item.icon}
+                                </SocialButton>
+                            </Tooltip>
+                        </Grid>
+                    ))}
+                </Grid>
+                <Internal>
+                    {locale.connectFooter.internalLinks.map((linkProperties, index) => {
+                        return (
+                            <span key={`internallabel-${index}`}>
+                                <a data-testid={linkProperties.dataTestid} href={linkProperties.linkTo}>
+                                    {linkProperties.linklabel}
+                                </a>
+                                {index < locale.connectFooter.internalLinks.length - 1 && <span>&nbsp;|&nbsp; </span>}
+                            </span>
+                        );
+                    })}
+                </Internal>
+            </Contacts>
+            <GivingBlock item xs={12} md={4}>
+                <Grid container spacing={2}>
+                    {locale.connectFooter.givingLinks.map((item, index) => {
+                        return (
+                            <GivingButtonHolder item xs={12} key={`givingLinks-${index}`}>
+                                <Button
+                                    fullWidth
+                                    children={item.label}
+                                    data-testid={item.dataTestid}
+                                    key={`givingLinks-${index}-button`}
+                                    onClick={() => loadLinkInSamePage(item.linkTo)}
+                                    variant="contained"
+                                />
+                            </GivingButtonHolder>
+                        );
+                    })}
+                </Grid>
+            </GivingBlock>
+        </MainConnectFooter>
     );
-}
-
-ConnectFooter.propTypes = {
-    // classes: PropTypes.object.isRequired,
-    classes: PropTypes.object,
-    // history: PropTypes.object.isRequired,
-    history: PropTypes.object,
-};
-
-ConnectFooter.defaultProps = {
-    // classes: {},
 };
 
 export default ConnectFooter;
