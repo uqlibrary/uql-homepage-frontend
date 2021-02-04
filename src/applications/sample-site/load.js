@@ -26,9 +26,9 @@ function loadReusableComponents() {
     // document.body.insertBefore(alerts, firstElement);
 
     // // insert sub footer before body-tag
-    // const subFooter = document.createElement('library-connect-footer');
-    const subFooter = document.createElement('uql-connect-footer');
-    document.body.appendChild(subFooter);
+    // const connectFooter = document.createElement('library-connect-footer');
+    const connectFooter = document.createElement('uql-connect-footer');
+    document.body.appendChild(connectFooter);
 
     // insert footer before body-tag
     const footer = document.createElement('uq-minimal-footer');
