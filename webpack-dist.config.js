@@ -148,7 +148,7 @@ const webpackConfig = {
     devtool: 'source-map',
     // The entry file. All your app roots from here.
     entry: {
-        main: resolve(__dirname, './src/index.js'),
+        main: resolve(__dirname, './src/webcomponent-index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
         webcomponents: resolve(__dirname, './src/modules/WebComponents/index.js'),
     },
