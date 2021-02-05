@@ -11,7 +11,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
 // Internal
-import Root from './Root';
+import WebComponentsRoot from './modules/WebComponents/WebComponentsRoot';
 import AppErrorBoundary from './AppErrorBoundary';
 import rootReducer from './reducer';
 import 'sass/index.scss';
@@ -32,7 +32,7 @@ const render = () => {
             <AppContainer>
                 <Provider store={store}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <Root history={history} />
+                        <WebComponentsRoot history={history} />
                     </MuiPickersUtilsProvider>
                 </Provider>
             </AppContainer>
