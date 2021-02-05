@@ -93,8 +93,9 @@ export const WebComponentsApp = ({
     }, []);
 
     const classes = useStyles();
+    // position static makes the Chat go to the bottom of the screen
     return (
-        <Grid container className={classes.layoutFill}>
+        <Grid container className={classes.layoutFill} style={{ position: 'static' }}>
             {chatStatus && (chatStatus.online === true || chatStatus.online === false) && (
                 <ChatStatus status={chatStatus} />
             )}
