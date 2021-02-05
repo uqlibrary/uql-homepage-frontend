@@ -150,7 +150,7 @@ const webpackConfig = {
     entry: {
         main: resolve(__dirname, './src/webcomponent-index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
-        webcomponents: resolve(__dirname, './src/modules/WebComponents/index.js'),
+        // webcomponents: resolve(__dirname, './src/modules/WebComponents/index.js'),
     },
     // Where you want the output to go
     output: {

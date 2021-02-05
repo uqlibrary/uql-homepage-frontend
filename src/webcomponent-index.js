@@ -11,7 +11,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
 // Internal
-import WebComponentsRoot from './modules/WebComponents/WebComponentsRoot';
+import WebComponentsRoot from './modules/WebComponents/components/WebComponentsRoot';
 import AppErrorBoundary from './AppErrorBoundary';
 import rootReducer from './reducer';
 import 'sass/index.scss';
