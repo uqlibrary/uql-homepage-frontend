@@ -18,17 +18,6 @@ function loadReusableComponents() {
     reactRoot.setAttribute('class', 'layout-fill');
     reactRoot.setAttribute('style', 'height:auto');
     document.body.insertBefore(reactRoot, firstElement);
-
-    // wait for the footer to exist before we move it
-    const checkExist = setInterval(() => {
-        const footer = document.getElementById('webComponentFooter');
-        if (!!footer) {
-            !!footer && document.body.appendChild(footer.firstElementChild);
-            clearInterval(checkExist);
-
-            document.body.style.overflow = 'auto';
-        }
-    }, 100); // check every 100ms
 }
 
 ready(loadReusableComponents);

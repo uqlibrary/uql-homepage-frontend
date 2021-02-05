@@ -102,6 +102,17 @@ class CreateWebComponentGetter {
             "    await insertLink(root + 'main-" +
             hash +
             ".min.css');\n" +
+            '\n' +
+            // wait for the footer to exist before we move it, in order to put it below the foreign content
+            '    const checkExist = setInterval(() => {\n' +
+            "        const footer = document.getElementById('webComponentFooter');\n" +
+            '        if (!!footer) {\n' +
+            '            !!footer && document.body.appendChild(footer.firstElementChild);\n' +
+            '            clearInterval(checkExist);\n' +
+            '\n' +
+            "            document.body.style.overflow = 'auto';\n" +
+            '        }\n' +
+            '    }, 100); // check every 100ms\n\n' +
             '}\n' +
             '\n' +
             'ready(loadReusableComponents);\n';
