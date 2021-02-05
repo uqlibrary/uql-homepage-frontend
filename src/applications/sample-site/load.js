@@ -16,6 +16,8 @@ function loadReusableComponents() {
     const reactRoot = document.createElement('div');
     reactRoot.setAttribute('id', 'react-root');
     reactRoot.setAttribute('class', 'layout-fill');
+    reactRoot.setAttribute('style', 'height:auto');
+
     document.body.insertBefore(reactRoot, firstElement);
 }
 

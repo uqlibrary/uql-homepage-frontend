@@ -1,19 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router';
-import { routes } from 'config';
 import browserUpdate from 'browser-update';
-import { AccountContext } from 'context';
-import { ContentLoader } from 'modules/SharedComponents/Toolbox/Loaders';
 import AppAlertContainer from 'modules/App/containers/AppAlert';
-import * as pages from 'modules/App/components/pages';
 import Grid from '@material-ui/core/Grid';
 import UQHeader from 'modules/SharedComponents/Header/UQHeader';
 import ChatStatus from 'modules/SharedComponents/Header/ChatStatus';
-import { ConnectFooter, MinimalFooter } from 'modules/SharedComponents/Footer';
 import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
-import { isHdrStudent } from 'helpers/access';
 
 browserUpdate({
     required: {
@@ -85,7 +78,6 @@ export const WebComponentsApp = ({
     author,
     authorDetails,
     accountLoading,
-    accountAuthorDetailsLoading,
     actions,
     chatStatus,
     libHours,
@@ -101,14 +93,6 @@ export const WebComponentsApp = ({
     }, []);
 
     const classes = useStyles();
-    const isAccountLoading = accountLoading;
-    const routesConfig = routes.getRoutesConfig({
-        components: pages,
-        authorDetails: authorDetails,
-        account: account,
-        accountAuthorDetailsLoading: accountAuthorDetailsLoading,
-        isHdrStudent: isHdrStudent,
-    });
     return (
         <Grid container className={classes.layoutFill}>
             {chatStatus && (chatStatus.online === true || chatStatus.online === false) && (
@@ -120,7 +104,7 @@ export const WebComponentsApp = ({
                 </div>
                 <UQSiteHeader
                     account={account}
-                    accountLoading={isAccountLoading}
+                    accountLoading={accountLoading}
                     author={author}
                     authorDetails={authorDetails}
                     history={history}
@@ -135,33 +119,6 @@ export const WebComponentsApp = ({
                 />
                 <div role="region" aria-label="UQ Library Alerts">
                     <AppAlertContainer />
-                </div>
-                <div style={{ flexGrow: 1, marginTop: 16 }}>
-                    <AccountContext.Provider
-                        value={{
-                            account: {
-                                ...account,
-                            },
-                        }}
-                    >
-                        <React.Suspense fallback={<ContentLoader message="Loading" />}>
-                            <Switch>
-                                {routesConfig.map((route, index) => (
-                                    <Route key={`route_${index}`} {...route} />
-                                ))}
-                            </Switch>
-                        </React.Suspense>
-                    </AccountContext.Provider>
-                </div>
-                <div>
-                    <Grid container spacing={0}>
-                        <Grid item xs={12} className={classes.connectFooter}>
-                            <ConnectFooter history={history} />
-                        </Grid>
-                        <Grid item xs={12} className={classes.minimalFooter}>
-                            <MinimalFooter />
-                        </Grid>
-                    </Grid>
                 </div>
             </div>
         </Grid>
