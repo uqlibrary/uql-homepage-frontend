@@ -89,6 +89,22 @@ class CreateWebComponentGetter {
             '        }\n' +
             '    }\n' +
             '}\n' +
+            'function insertLink(href) {\n' +
+            '    var linkTag = document.querySelector("link[href*=\'" + href + "\']");\n' +
+            '    if (!linkTag) {\n' +
+            '        var heads = document.getElementsByTagName("head");\n' +
+            '        if (heads && heads.length) {\n' +
+            '            var head = heads[0];\n' +
+            '            if (head) {\n' +
+            "                linkTag = document.createElement('link');\n" +
+            "                linkTag.setAttribute('href', href);\n" +
+            "                linkTag.setAttribute('rel', 'Stylesheet');\n" +
+            "                linkTag.setAttribute('type', 'text/css');\n" +
+            '                head.appendChild(linkTag);\n' +
+            '            }\n' +
+            '        }\n' +
+            '    }\n' +
+            '}\n' +
             '\n' +
             'async function loadReusableComponents() {\n' +
             // TODO: polyfill here
@@ -98,7 +114,7 @@ class CreateWebComponentGetter {
             '\n' +
             // TODO dev address
             '    const root = ' +
-            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development' : 'https://www.library.uq.edu.au';\n" +
+            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development/' : 'https://www.library.uq.edu.au/';\n" +
             "    const locator = root + '/frontend-js/';\n" +
             "    await insertScript(locator + 'vendor-" +
             hash +
@@ -106,6 +122,9 @@ class CreateWebComponentGetter {
             "    await insertScript(locator + 'main-" +
             hash +
             ".min.js');\n" +
+            "    await insertLink(root + 'main-" +
+            hash +
+            ".min.css');\n" +
             '}\n' +
             '\n' +
             'ready(loadReusableComponents);\n';
