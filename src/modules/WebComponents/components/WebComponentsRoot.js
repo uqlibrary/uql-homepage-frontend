@@ -12,9 +12,7 @@ const generateClassName = createGenerateClassName({
     productionPrefix: 'uq-espace-',
 });
 
-// Top level "pages"
-import { App } from 'modules/App';
-// import WebComponentsApp from 'modules/WebComponents';
+import WebComponentsApp from 'modules/WebComponents/container/WebComponentsApp';
 
 const WebComponentsRoot = ({ history }) => {
     return (
@@ -22,7 +20,7 @@ const WebComponentsRoot = ({ history }) => {
             <JssProvider generateClassName={generateClassName}>
                 <MuiThemeProvider theme={mui1theme}>
                     <Switch>
-                        <Route component={App} />
+                        <Route component={WebComponentsApp} />
                     </Switch>
                 </MuiThemeProvider>
             </JssProvider>
