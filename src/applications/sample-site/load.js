@@ -12,35 +12,11 @@ function loadReusableComponents() {
     // first element of the original document
     const firstElement = document.body.children[0];
 
-    // insert header at body start
-    const uqheader = document.createElement('uq-header');
-    document.body.insertBefore(uqheader, firstElement);
-
-    // // const header = document.createElement('library-header');
-    const header = document.createElement('uql-header'); // older approach
-    document.body.insertBefore(header, firstElement);
-
-    // insert alerts after headers
-    // const alerts = document.createElement('uql-alerts');
-    // // const alerts = document.createElement('alerts-web-component');
-    // document.body.insertBefore(alerts, firstElement);
-
-    // // insert sub footer before body-tag
-    // const connectFooter = document.createElement('library-connect-footer');
-    const connectFooter = document.createElement('uql-connect-footer');
-    document.body.appendChild(connectFooter);
-
-    // insert footer before body-tag
-    const footer = document.createElement('uq-minimal-footer');
-    document.body.appendChild(footer);
-
-    window.addEventListener('WebComponentsReady', function () {
-        // when react is ready - configure elements
-        // these values are the default, but I wanted to show it
-        header.showLoginButton = true;
-        header.showAskusButton = true;
-        header.showMylibraryButton = true;
-    });
+    // insert the react root for the react code to grab onto
+    const reactRoot = document.createElement('div');
+    reactRoot.setAttribute('id', 'react-root');
+    reactRoot.setAttribute('class', 'layout-fill');
+    document.body.insertBefore(reactRoot, firstElement);
 }
 
 ready(loadReusableComponents);

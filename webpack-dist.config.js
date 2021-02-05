@@ -103,7 +103,7 @@ class CreateWebComponentGetter {
             "    await insertScript(locator + 'vendor-" +
             hash +
             ".min.js');\n" +
-            "    await insertScript(locator + 'webcomponents-" +
+            "    await insertScript(locator + 'main-" +
             hash +
             ".min.js');\n" +
             '}\n' +
