@@ -7,6 +7,7 @@ import UQHeader from 'modules/SharedComponents/Header/UQHeader';
 import ChatStatus from 'modules/SharedComponents/Header/ChatStatus';
 import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
+import { ConnectFooter, MinimalFooter } from 'modules/SharedComponents/Footer';
 
 browserUpdate({
     required: {
@@ -120,6 +121,18 @@ export const WebComponentsApp = ({
                 />
                 <div role="region" aria-label="UQ Library Alerts">
                     <AppAlertContainer />
+                </div>
+                <div>
+                    <div id="webComponentFooter">
+                        <Grid container spacing={0}>
+                            <Grid item xs={12} className={classes.connectFooter}>
+                                <ConnectFooter history={history} />
+                            </Grid>
+                            <Grid item xs={12} className={classes.minimalFooter}>
+                                <MinimalFooter />
+                            </Grid>
+                        </Grid>
+                    </div>
                 </div>
             </div>
         </Grid>

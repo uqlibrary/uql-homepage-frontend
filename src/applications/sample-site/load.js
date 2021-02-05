@@ -17,8 +17,20 @@ function loadReusableComponents() {
     reactRoot.setAttribute('id', 'react-root');
     reactRoot.setAttribute('class', 'layout-fill');
     reactRoot.setAttribute('style', 'height:auto');
-
     document.body.insertBefore(reactRoot, firstElement);
+
+    // wait for the footer to exist before we move it
+    const checkExist = setInterval(function () {
+        const footer = document.getElementById('webComponentFooter');
+        if (!!footer) {
+            console.log('Exists!');
+            console.log('footer = ', footer);
+            !!footer && document.body.appendChild(footer.firstElementChild);
+            clearInterval(checkExist);
+
+            document.body.style.overflow = 'auto';
+        }
+    }, 100); // check every 100ms
 }
 
 ready(loadReusableComponents);
