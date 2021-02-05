@@ -13,7 +13,6 @@ const WebpackStrip = require('strip-loader');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const fs = require('fs');
 
 const options = {
     policy: [
@@ -54,103 +53,13 @@ if (config.environment === 'development') {
     config.basePath += branch + '/';
 }
 
-// TODO see if this can moved to an external file
-class CreateWebComponentGetter {
-    // creates webcomponentwrapper.js in dist that include the appropriate files because it can read the hash value here
-    // from https://stackoverflow.com/questions/50228128/how-to-inject-webpack-build-hash-to-application-code
-    constructor(options = {}) {
-        this.options = {
-            ...options,
-        };
-    }
-    apply(compiler) {
-        const allData = hash =>
-            'async function ready(fn) {\n' +
-            "    if (document.readyState !== 'loading'){\n" +
-            '        await fn();\n' +
-            '    } else {\n' +
-            "        document.addEventListener('DOMContentLoaded', fn);\n" +
-            '    }\n' +
-            '}\n' +
-            '\n' +
-            'async function insertScript(url) {\n' +
-            '    var script = document.querySelector("script[src*=\'" + url + "\']");\n' +
-            '    if (!script) {\n' +
-            "        var heads = document.getElementsByTagName('head');\n" +
-            '        if (heads && heads.length) {\n' +
-            '            var head = heads[0];\n' +
-            '            if (head) {\n' +
-            "                script = document.createElement('script');\n" +
-            "                script.setAttribute('src', url);\n" +
-            "                script.setAttribute('defer', true);\n" +
-            "                script.setAttribute('type', 'text/javascript');\n" +
-            '                head.appendChild(script);\n' +
-            '            }\n' +
-            '        }\n' +
-            '    }\n' +
-            '}\n' +
-            'function insertLink(href) {\n' +
-            '    var linkTag = document.querySelector("link[href*=\'" + href + "\']");\n' +
-            '    if (!linkTag) {\n' +
-            '        var heads = document.getElementsByTagName("head");\n' +
-            '        if (heads && heads.length) {\n' +
-            '            var head = heads[0];\n' +
-            '            if (head) {\n' +
-            "                linkTag = document.createElement('link');\n" +
-            "                linkTag.setAttribute('href', href);\n" +
-            "                linkTag.setAttribute('rel', 'Stylesheet');\n" +
-            "                linkTag.setAttribute('type', 'text/css');\n" +
-            '                head.appendChild(linkTag);\n' +
-            '            }\n' +
-            '        }\n' +
-            '    }\n' +
-            '}\n' +
-            '\n' +
-            'async function loadReusableComponents() {\n' +
-            // TODO: polyfill here
-            // eg
-            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js');\n" +
-            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js');\n" +
-            '\n' +
-            // TODO dev address
-            '    const root = ' +
-            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development/' : 'https://www.library.uq.edu.au/';\n" +
-            "    const locator = root + '/frontend-js/';\n" +
-            "    await insertScript(locator + 'vendor-" +
-            hash +
-            ".min.js');\n" +
-            "    await insertScript(locator + 'main-" +
-            hash +
-            ".min.js');\n" +
-            "    await insertLink(root + 'main-" +
-            hash +
-            ".min.css');\n" +
-            '}\n' +
-            '\n' +
-            'ready(loadReusableComponents);\n';
-
-        compiler.hooks.done.tap(this.constructor.name, stats => {
-            return new Promise((resolve, reject) => {
-                fs.writeFile(this.options.filename, allData(stats.hash), 'utf8', error => {
-                    if (error) {
-                        reject(error);
-                        return;
-                    }
-                    resolve();
-                });
-            });
-        });
-    }
-}
-
 const webpackConfig = {
     mode: 'production',
     devtool: 'source-map',
     // The entry file. All your app roots from here.
     entry: {
-        main: resolve(__dirname, './src/webcomponent-index.js'),
+        main: resolve(__dirname, './src/index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
-        // webcomponents: resolve(__dirname, './src/modules/WebComponents/index.js'),
     },
     // Where you want the output to go
     output: {
@@ -208,9 +117,6 @@ const webpackConfig = {
         // new ExtractTextPlugin('[name]-[hash].min.css'),
         new MiniCssExtractPlugin({
             filename: '[name]-[hash].min.css',
-        }),
-        new CreateWebComponentGetter({
-            filename: 'dist/webcomponentwrapper.js',
         }),
 
         // plugin for passing in data to the js, like what NODE_ENV we are in.

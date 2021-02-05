@@ -20,11 +20,9 @@ function loadReusableComponents() {
     document.body.insertBefore(reactRoot, firstElement);
 
     // wait for the footer to exist before we move it
-    const checkExist = setInterval(function () {
+    const checkExist = setInterval(() => {
         const footer = document.getElementById('webComponentFooter');
         if (!!footer) {
-            console.log('Exists!');
-            console.log('footer = ', footer);
             !!footer && document.body.appendChild(footer.firstElementChild);
             clearInterval(checkExist);
 

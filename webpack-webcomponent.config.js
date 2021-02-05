@@ -11,7 +11,6 @@ const chalk = require('chalk');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const WebpackStrip = require('strip-loader');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const fs = require('fs');
 
@@ -67,16 +66,17 @@ class CreateWebComponentGetter {
             '        }\n' +
             '    }\n' +
             '}\n' +
-            'function insertLink(link) {\n' +
-            '    var linkTag = document.querySelector("link[href*=\'" + link.href + "\']");\n' +
+            'function insertLink(href) {\n' +
+            '    var linkTag = document.querySelector("link[href*=\'" + href + "\']");\n' +
             '    if (!linkTag) {\n' +
             '        var heads = document.getElementsByTagName("head");\n' +
             '        if (heads && heads.length) {\n' +
             '            var head = heads[0];\n' +
             '            if (head) {\n' +
             "                linkTag = document.createElement('link');\n" +
-            "                linkTag.setAttribute('href', link.href);\n" +
-            "                linkTag.setAttribute('rel', link.rel);\n" +
+            "                linkTag.setAttribute('href', href);\n" +
+            "                linkTag.setAttribute('rel', 'Stylesheet');\n" +
+            "                linkTag.setAttribute('type', 'text/css');\n" +
             '                head.appendChild(linkTag);\n' +
             '            }\n' +
             '        }\n' +
@@ -91,18 +91,17 @@ class CreateWebComponentGetter {
             '\n' +
             // TODO dev address
             '    const root = ' +
-            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development' : 'https://www.library.uq.edu.au';\n" +
-            "    const locator = root + '/webcomponents-js/';\n" +
+            "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development/' : 'https://www.library.uq.edu.au/';\n" +
+            "    const locator = root + 'webcomponents-js/';\n" +
             "    await insertScript(locator + 'vendor-" +
             hash +
             ".min.js');\n" +
-            "    await insertScript(locator + 'webcomponents-" +
+            "    await insertScript(locator + 'main-" +
             hash +
             ".min.js');\n" +
-            '}\n' +
-            "    await insertLink({ rel: 'import', href: root + 'main-" +
+            "    await insertLink(root + 'main-" +
             hash +
-            ".min.css' });\n" +
+            ".min.css');\n" +
             '}\n' +
             '\n' +
             'ready(loadReusableComponents);\n';
@@ -126,14 +125,13 @@ const webpackConfig = {
     devtool: 'source-map',
     // The entry file. All your app roots from here.
     entry: {
-        // including this line makes the main-[hash].min.css file be created
-        main: resolve(__dirname, './src/index.js'),
+        main: resolve(__dirname, './src/webcomponent-index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
     },
     // Where you want the output to go
     output: {
         path: resolve(__dirname, './dist/', config.basePath),
-        filename: 'webcomponent-js/[name]-[hash].min.js',
+        filename: 'webcomponents-js/[name]-[hash].min.js',
         publicPath: config.publicPath,
     },
     devServer: {
