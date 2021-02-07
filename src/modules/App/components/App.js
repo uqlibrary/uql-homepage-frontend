@@ -8,10 +8,10 @@ import { ContentLoader } from 'modules/SharedComponents/Toolbox/Loaders';
 import AppAlertContainer from 'modules/App/containers/AppAlert';
 import * as pages from 'modules/App/components/pages';
 import Grid from '@material-ui/core/Grid';
-import UQHeader from 'modules/SharedComponents/Header/UQHeader';
-import ChatStatus from 'modules/SharedComponents/Header/ChatStatus';
+import UQHeader from 'modules/App/components/UQHeader';
+import ChatStatus from 'modules/App/components/ChatStatus';
 import { ConnectFooter, MinimalFooter } from 'modules/SharedComponents/Footer';
-import UQSiteHeader from 'modules/SharedComponents/Header/UQSiteHeader';
+import UQSiteHeader from 'modules/App/components/UQSiteHeader';
 import { makeStyles } from '@material-ui/core/styles';
 import { isHdrStudent } from 'helpers/access';
 

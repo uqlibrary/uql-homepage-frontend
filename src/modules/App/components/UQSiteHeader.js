@@ -8,12 +8,12 @@ import { APP_URL, AUTH_URL_LOGIN, AUTH_URL_LOGOUT, routes } from 'config';
 import locale from 'locale/global';
 import { pathConfig } from 'config/routes';
 import { UQSiteHeaderLocale } from './UQSiteHeader.locale';
-import { mui1theme } from 'config/index';
+import { mui1theme } from 'config';
 
-import { AskUs } from 'modules/SharedComponents/Header/AskUs';
+import { AskUs } from 'modules/App/components/AskUs';
 import { AuthButton } from 'modules/SharedComponents/Toolbox/AuthButton';
-import Megamenu from 'modules/SharedComponents/Header/Megamenu';
-import MyLibrary from 'modules/SharedComponents/Header/MyLibrary';
+import Megamenu from 'modules/App/components/Megamenu';
+import MyLibrary from 'modules/App/components/MyLibrary';
 
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
