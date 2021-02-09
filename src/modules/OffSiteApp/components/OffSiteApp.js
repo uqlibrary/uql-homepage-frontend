@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const WebComponentsApp = ({
+export const OffSiteApp = ({
     account,
     author,
     authorDetails,
@@ -135,7 +135,7 @@ export const WebComponentsApp = ({
     );
 };
 
-WebComponentsApp.propTypes = {
+OffSiteApp.propTypes = {
     account: PropTypes.object,
     accountLoading: PropTypes.bool,
     accountAuthorDetailsLoading: PropTypes.bool,
@@ -150,4 +150,4 @@ WebComponentsApp.propTypes = {
     isSessionExpired: PropTypes.any,
 };
 
-export default WebComponentsApp;
+export default OffSiteApp;

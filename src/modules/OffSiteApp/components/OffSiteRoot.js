@@ -12,15 +12,15 @@ const generateClassName = createGenerateClassName({
     productionPrefix: 'uq-espace-',
 });
 
-import WebComponentsApp from 'modules/WebComponents/container/WebComponentsApp';
+import OffSiteApp from 'modules/OffSiteApp/container/OffSiteApp';
 
-const WebComponentsRoot = ({ history }) => {
+const OffSiteRoot = ({ history }) => {
     return (
         <ConnectedRouter history={history}>
             <JssProvider generateClassName={generateClassName}>
                 <MuiThemeProvider theme={mui1theme}>
                     <Switch>
-                        <Route component={WebComponentsApp} />
+                        <Route component={OffSiteApp} />
                     </Switch>
                 </MuiThemeProvider>
             </JssProvider>
@@ -28,8 +28,8 @@ const WebComponentsRoot = ({ history }) => {
     );
 };
 
-WebComponentsRoot.propTypes = {
+OffSiteRoot.propTypes = {
     history: PropTypes.object,
 };
 
-export default WebComponentsRoot;
+export default OffSiteRoot;

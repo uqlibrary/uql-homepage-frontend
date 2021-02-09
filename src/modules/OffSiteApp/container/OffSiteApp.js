@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import WebComponentsApp from '../components/WebComponentsApp';
+import OffSiteApp from '../components/OffSiteApp';
 import { bindActionCreators } from 'redux';
 import * as actions from 'actions';
 
@@ -14,5 +14,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const WebComponentsAppContainer = connect(mapStateToProps, mapDispatchToProps)(WebComponentsApp);
-export default WebComponentsAppContainer;
+const OffSiteAppContainer = connect(mapStateToProps, mapDispatchToProps)(OffSiteApp);
+export default OffSiteAppContainer;

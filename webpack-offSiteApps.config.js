@@ -32,8 +32,8 @@ if (config.environment === 'development') {
 }
 
 // TODO see if this can moved to an external file
-class CreateWebComponentGetter {
-    // creates webcomponentwrapper.js in dist that include the appropriate files because it can read the hash value here
+class CreateOffSiteApp {
+    // creates offSiteAppWrapper.js in dist that include the appropriate files because it can read the hash value here
     // from https://stackoverflow.com/questions/50228128/how-to-inject-webpack-build-hash-to-application-code
     constructor(options = {}) {
         this.options = {
@@ -86,13 +86,13 @@ class CreateWebComponentGetter {
             'async function loadReusableComponents() {\n' +
             // TODO: polyfill here
             // eg
-            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js');\n" +
-            "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js');\n" +
+            // "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js');\n" +
+            // "    await insertScript('https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js');\n" +
             '\n' +
             // TODO dev address
             '    const root = ' +
             "location.hostname.startsWith('localhost') ? '/homepage-react/dist/development/' : 'https://www.library.uq.edu.au/';\n" +
-            "    const locator = root + 'webcomponents-js/';\n" +
+            "    const locator = root + 'offSiteApps-js/';\n" +
             "    await insertScript(locator + 'vendor-" +
             hash +
             ".min.js');\n" +
@@ -126,13 +126,13 @@ const webpackConfig = {
     devtool: 'source-map',
     // The entry file. All your app roots from here.
     entry: {
-        main: resolve(__dirname, './src/webcomponent-index.js'),
+        main: resolve(__dirname, './src/offSiteAppWrapper-index.js'),
         vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'moment'],
     },
     // Where you want the output to go
     output: {
         path: resolve(__dirname, './dist/', config.basePath),
-        filename: 'webcomponents-js/[name]-[hash].min.js',
+        filename: 'offSiteApps-js/[name]-[hash].min.js',
         publicPath: config.publicPath,
     },
     devServer: {
@@ -186,8 +186,8 @@ const webpackConfig = {
         new MiniCssExtractPlugin({
             filename: '[name]-[hash].min.css',
         }),
-        new CreateWebComponentGetter({
-            filename: 'dist/webcomponentwrapper.js',
+        new CreateOffSiteApp({
+            filename: 'dist/offSiteAppWrapper.js',
         }),
 
         // plugin for passing in data to the js, like what NODE_ENV we are in.
