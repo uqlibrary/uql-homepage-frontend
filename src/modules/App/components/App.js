@@ -93,10 +93,52 @@ export const App = ({
     libHoursError,
     history,
 }) => {
+    function showButton(button) {
+        button.style.display = 'block';
+    }
+
+    const showAuthButton = setInterval(() => {
+        const button = document.getElementById('auth-button-block');
+        if (!!button) {
+            showButton(button);
+            clearInterval(showAuthButton);
+        }
+    }, 100); // check every 100ms
+
+    const showMyLibraryButton = setInterval(() => {
+        const button = document.getElementById('mylibrary-button-block');
+        if (!!button) {
+            showButton(button);
+            clearInterval(showMyLibraryButton);
+        }
+    }, 100); // check every 100ms
+
+    const showAskUsButton = setInterval(() => {
+        const button = document.getElementById('askus-button-block');
+        if (!!button) {
+            showButton(button);
+            clearInterval(showAskUsButton);
+        }
+    }, 100); // check every 100ms
+
+    const showConnectFooter = setInterval(() => {
+        const elem = document.getElementById('connect-footer-block');
+        if (!!elem) {
+            elem.style.display = 'flex';
+            clearInterval(showConnectFooter);
+        }
+    }, 100); // check every 100ms
+
     useEffect(() => {
         actions.loadCurrentAccount();
         actions.loadAlerts();
         actions.loadChatStatus();
+
+        // reinsert the elements that are auto hidden so they are optional on other sites
+        showAskUsButton;
+        showAuthButton;
+        showMyLibraryButton;
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -129,9 +171,6 @@ export const App = ({
                     libHoursloading={libHoursLoading}
                     libHoursError={libHoursError}
                     isLibraryWebsiteCall
-                    showAskusButton
-                    showLoginButton
-                    showMylibraryButton
                 />
                 <div role="region" aria-label="UQ Library Alerts">
                     <AppAlertContainer />
@@ -153,7 +192,7 @@ export const App = ({
                         </React.Suspense>
                     </AccountContext.Provider>
                 </div>
-                <div>
+                <div id="full-footer-block">
                     <Grid container spacing={0}>
                         <Grid item xs={12} className={classes.connectFooter}>
                             <ConnectFooter history={history} />

@@ -99,9 +99,6 @@ export const UQSiteHeader = ({
     libHoursLoading,
     libHoursError,
     isLibraryWebsiteCall,
-    showAskusButton,
-    showLoginButton,
-    showMylibraryButton,
 }) => {
     const classes = useStyles(mui1theme);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -164,29 +161,46 @@ export const UQSiteHeader = ({
                     </Button>
                 </Grid>
                 <Grid item xs />
-                {isAuthorizedUser && showMylibraryButton && (
-                    <Grid item xs={'auto'} className={classes.utility} id="mylibrary" data-testid="mylibrary">
+                {isAuthorizedUser && (
+                    <Grid
+                        item
+                        xs={'auto'}
+                        className={classes.utility}
+                        id="mylibrary-button-block"
+                        data-testid="mylibrary"
+                        style={{ display: 'none' }} // for foreign sites - immediate overwrite on homepage
+                    >
                         <MyLibrary account={account} author={author} history={history} />
                     </Grid>
                 )}
-                {!!showAskusButton && (
-                    <Grid item xs={'auto'} className={classes.utility} id="askus" data-testid="askus">
-                        <AskUs
-                            chatStatus={chatStatus}
-                            libHours={libHours}
-                            libHoursLoading={libHoursLoading}
-                            libHoursError={libHoursError}
-                        />
-                    </Grid>
-                )}
-                {!!showLoginButton && (
-                    <Grid item xs={'auto'} className={classes.utility} id="auth" data-testid="auth">
-                        <AuthButton
-                            isAuthorizedUser={isAuthorizedUser}
-                            onClick={redirectUserToLogin(isAuthorizedUser, true)}
-                        />
-                    </Grid>
-                )}
+                <Grid
+                    item
+                    xs={'auto'}
+                    className={classes.utility}
+                    id="askus-button-block"
+                    data-testid="askus"
+                    style={{ display: 'none' }}
+                >
+                    <AskUs
+                        chatStatus={chatStatus}
+                        libHours={libHours}
+                        libHoursLoading={libHoursLoading}
+                        libHoursError={libHoursError}
+                    />
+                </Grid>
+                <Grid
+                    item
+                    xs={'auto'}
+                    className={classes.utility}
+                    id="auth-button-block"
+                    data-testid="auth"
+                    style={{ display: 'none' }}
+                >
+                    <AuthButton
+                        isAuthorizedUser={isAuthorizedUser}
+                        onClick={redirectUserToLogin(isAuthorizedUser, true)}
+                    />
+                </Grid>
                 <Grid item xs={'auto'} className={classes.utility} data-testid="mobile-megamenu" id="mobile-megamenu">
                     <Hidden lgUp>
                         <Grid item xs={'auto'} id="mobile-menu" data-testid="mobile-menu">
@@ -255,16 +269,10 @@ UQSiteHeader.propTypes = {
     libHoursLoading: PropTypes.bool,
     libHoursError: PropTypes.bool,
     isLibraryWebsiteCall: PropTypes.bool,
-    showAskusButton: PropTypes.bool,
-    showLoginButton: PropTypes.bool,
-    showMylibraryButton: PropTypes.bool,
 };
 
 UQSiteHeader.defaultProps = {
     isLibraryWebsiteCall: false,
-    showAskusButton: false,
-    showLoginButton: false,
-    showMylibraryButton: false,
 };
 
 export default UQSiteHeader;

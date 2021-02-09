@@ -114,17 +114,13 @@ export const WebComponentsApp = ({
                     libHours={libHours}
                     libHoursloading={libHoursLoading}
                     libHoursError={libHoursError}
-                    isLibraryWebsiteCall
-                    showAskusButton
-                    showLoginButton
-                    showMylibraryButton
                 />
                 <div role="region" aria-label="UQ Library Alerts">
                     <AppAlertContainer />
                 </div>
                 <div>
-                    <div id="webComponentFooter">
-                        <Grid container spacing={0}>
+                    <div id="full-footer-block">
+                        <Grid container spacing={0} id="full-footer-block-child">
                             <Grid item xs={12} className={classes.connectFooter}>
                                 <ConnectFooter history={history} />
                             </Grid>
@@ -153,7 +149,5 @@ WebComponentsApp.propTypes = {
     chatStatus: PropTypes.object,
     isSessionExpired: PropTypes.any,
 };
-
-WebComponentsApp.defaultProps = {};
 
 export default WebComponentsApp;
